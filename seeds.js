@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const Campground = require("./models/campground");
 const Comment = require("./models/comment");
 const User = require("./models/user");
+const moment = require('moment');
 
 async function seedDB() {
   console.clear();
+  console.log(moment().format('MMMM Do YYYY, h:mm a'))
   const user = await User.findOne();
   // console.log(user);
   const jacob = await User.findOne({ username: "jgguinther09@gmail.com" });
