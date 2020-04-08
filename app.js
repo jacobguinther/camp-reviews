@@ -35,7 +35,7 @@ app.use(cookieParser("secret"));
 //require moment
 app.locals.moment = require("moment");
 seedDB(); //seed the database
-
+ 
 // PASSPORT CONFIGURATION
 app.use(
   require("express-session")({
@@ -44,7 +44,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
