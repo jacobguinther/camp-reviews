@@ -40,25 +40,16 @@ router.get("/", function(req, res){
 });
 
 //CREATE - add new campground to DB
-router.post("/", isLoggedIn, isSafe, function(req, res){
+router.post("/", isLoggedIn, function(req, res){
   // get data from form and add to campgrounds array
-  var name = req.body.name;
-  var image = req.body.image;
-  var desc = req.body.description;
-  var author = {
+  const {name, image, description, location, cost} = req.body
+  const author = {
       id: req.user._id,
       username: req.user.username
   }
-  var cost = req.body.cost;
-  geocoder.geocode(req.body.location, function (err, data) {
-    if (err || data.status === 'ZERO_RESULTS') {
-      req.flash('error', 'Invalid address');
-      return res.redirect('back');
-    }
-    var lat = data.results[0].geometry.location.lat;
-    var lng = data.results[0].geometry.location.lng;
-    var location = data.results[0].formatted_address;
-    var newCampground = {name: name, image: image, description: desc, cost: cost, author:author, location: location, lat: lat, lng: lng};
+    const lat = 38.8098;
+    const lng = 82.2024;
+    const newCampground = {name: name, image: image, description: description, cost: cost, author:author, location: location, lat: lat, lng: lng};
     // Create a new campground and save to DB
     Campground.create(newCampground, function(err, newlyCreated){
         if(err){
@@ -69,7 +60,6 @@ router.post("/", isLoggedIn, isSafe, function(req, res){
             res.redirect("/campgrounds");
         }
     });
-  });
 });
 
 //NEW - show form to create new campground
@@ -99,7 +89,7 @@ router.get("/:id/edit", isLoggedIn, checkUserCampground, function(req, res){
 });
 
 // PUT - updates campground in the database
-router.put("/:id", isSafe, function(req, res){
+router.put("/:id", function(req, res){
   geocoder.geocode(req.body.location, function (err, data) {
     var lat = data.results[0].geometry.location.lat;
     var lng = data.results[0].geometry.location.lng;
