@@ -22,9 +22,6 @@
           <em>Submitted by: <%= campground.author.username %>, <%=
             moment(campground.createdAt).fromNow() %></em>
         </p>
-        <% console.log("currentUser: ",currentUser) %>
-        <% console.log("campground.author.id: ",campground.author.id) %>
-        <%console.log("campground: ",campground) %> 
         <% if (currentUser &&
         campground.author.id.equals(currentUser._id) || currentUser &&
         currentUser.isAdmin){ %>
