@@ -1,4 +1,5 @@
-<%- include('../partials/header') %> 
+<%- include('../partials/header') %>
+
 <div class="row">
   <div class="col-md-3">
     <p class="lead">YelpCamp</p>
@@ -14,7 +15,11 @@
       <img class="img-responsive" src="<%= campground.image %>" />
       <div class="caption-full">
         <h4 class="pull-right">
+          <% if(campground.cost === 0) { %>
+          FREE
+          <% }else{ %>
           $<%= campground.cost %>/night
+          <% } %>
         </h4>
         <h4><a><%=campground.name%></a></h4>
         <p><%= campground.description %></p>
