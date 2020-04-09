@@ -2,143 +2,120 @@ const mongoose = require("mongoose");
 const Campground = require("./models/campground");
 const Comment = require("./models/comment");
 const User = require("./models/user");
-const moment = require('moment');
+const moment = require("moment");
 
 async function seedDB() {
   console.clear();
-  console.log(moment().format('MMMM Do YYYY, h:mm a'))
-  const user = await User.findOne();
-  // console.log(user);
-  const jacob = await User.findOne({ username: "jgguinther09@gmail.com" });
-  // console.log(jacob);
-  const tori = await User.findOne({ username: "toridillon@yahoo.com" });
-  // console.log(tori);
+  console.log(moment().format("MMMM Do YYYY, h:mm a"));
 
   // Delete Everything In Database
-  Campground.deleteMany({}, () => {
-    console.log("Removed Campgrounds!");
-  })
-    .then(() => {
-      Comment.deleteMany({}, () => {
-        console.log("Removed Comments!");
-      });
-    })
-    .then(() => {
-      User.deleteMany({}, () => {
-        console.log("Removed Users!");
-      });
-    })
-    .then(() => {
-      users.forEach((user) => {
-        User.register(
-          { username: user.username, isAdmin: user.isAdmin },
-          user.password,
-          function (err, user) {
-            if (err) {
-              console.log(err);
-              return res.render("register", { error: err.message });
-            }
-          }
-        );
-      });
-      console.log(`Added ${users.length} Users`);
-    })
-    .then(() => {
-      campgrounds.forEach((campground) => {
-        const {
-          name,
-          image,
-          description,
-          cost,
-          location,
-          lat,
-          lng,
-        } = campground;
-        Campground.create(
-          {
-            name: name,
-            image: image,
-            description: description,
-            cost: cost,
-            author: {
-              id: user.id,
-              username: user.username,
-            },
-            location: location,
-            lat: lat,
-            lng: lng,
-          },
-          (err, campground) => {
-            if (err) {
-              console.log(err);
-              return res.render("register", { error: err.message });
-            } else {
-              // comments.forEach((comment) => {
-              //   const { id, username } = jacob;
-              //   Comment.create(comment, (err, comment) => {
-              //     if (err) {
-              //       console.log(err);
-              //     } else {
-              //       comment.author.id = id;
-              //       comment.author.username = username;
-              //       comment
-              //         .save()
-              //         .then(() => {
-              //           campground.comments.push(comment);
-              //           // console.log(campground.comments)
-              //           // console.log(campground.comments)
-              //           // console.log(comments)
-              //           // console.log(comment)
-              //         })
-              //         .catch((err) => {
-              //           console.log(err);
-              //         });
-              //       // campground.comments.push(comment);
-              //       // campground.save();
-              //     }
-              //     campground.save();
-              //     console.log(campground)
-              //   });
-              // });
-            }
-          }
-        );
-      });
-      console.log(`Added ${campgrounds.length} Campgrounds`);
-    })
-    .catch((err) => {
-      console.log(err);
+  async function deleteEverything() {
+    await Campground.deleteMany({}, () => {
+      console.log("Removed Campgrounds!");
     });
-  //   const user = await User.findOne();
-  //   console.log(user)
 
-  //add a few campgrounds
-  //   campgrounds.forEach(function (seed) {
-  //     Campground.create(seed, function (err, campground) {
-  //       if (err) {
-  //         console.log(err);
-  //       } else {
-  //         console.log("added a campground");
-  //create a comment
-  // Comment.create(
-  //   {
-  //     text: "This place is great, but I wish there was internet",
-  //     author: "Homer",
-  //   },
-  //   function (err, comment) {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       campground.comments.push(comment);
-  //       campground.save();
-  //       console.log("Created new comment");
-  //     }
-  //   }
-  // );
-  //
-  // });
-  //add a few comments
+    await Comment.deleteMany({}, () => {
+      console.log("Removed Comments!");
+    });
+
+    await User.deleteMany({}, () => {
+      console.log("Removed Users!");
+    });
+  }
+
+  async function addUsers() {
+    users.forEach((user) => {
+       User.register(
+        { username: user.username, isAdmin: user.isAdmin },
+        user.password,
+        function (err, user) {
+          if (err) {
+            console.log(err);
+          }
+        }
+      );
+    });
+    console.log(`Added ${users.length} Users`);
+  }
+  deleteEverything();
+  addUsers();
+
+  const user = User.findOne();
+  // console.log(user);
+  const jacob = User.findOne({ username: "jgguinther09@gmail.com" }, (usr)=>console.log(usr));
+  // console.log(jacob);
+  // const tori =  await User.findOne({ username: "toridillon@yahoo.com" });
+  // console.log(tori);
+  // const arr = [jacob, tori]
+  
+  // Promise.all(arr)
+  // .then((values)=>{
+  //   // console.log(values);
+  //   console.log(values)
+  // })
+  // .catch((err)=>{
+  //   console.log(err)
+  // })
+
+  //     campgrounds.forEach((campground) => {
+  //       const { name, image, description, cost, location, lat, lng } = campground;
+  //       Campground.create(
+  //         {
+  //           name: name,
+  //           image: image,
+  //           description: description,
+  //           cost: cost,
+  //           author: {
+  //             id: jacob.id,
+  //             username: jacob.username,
+  //           },
+  //           location: location,
+  //           lat: lat,
+  //           lng: lng,
+  //         },
+  //         (err, campground) => {
+  //           if (err) {
+  //             console.log(err);
+  //             return res.render("register", { error: err.message });
+  //           } else {
+  //           }
+  //         }
+  //       )
+  //     });
+  //     console.log(`Added ${campgrounds.length} Campgrounds`);
 }
+
+//======================================
+
+// comments.forEach((comment) => {
+//   const { id, username } = jacob;
+//   Comment.create(comment, (err, comment) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       comment.author.id = id;
+//       comment.author.username = username;
+//       comment
+//         .save()
+//         .then(() => {
+//           campground.comments.push(comment.id);
+
+//           // campground.save((err) => {
+//           //   console.log(err);
+//           // });
+//           // console.log(campground.comments)
+//           // console.log(campground.comments)
+//           // console.log(comments)
+//           // console.log(comment)
+
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         });
+//     }
+//   });
+
+// });
 
 const users = [
   { username: "jgguinther09@gmail.com", password: "password", isAdmin: false },

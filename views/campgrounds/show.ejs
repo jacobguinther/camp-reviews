@@ -16,13 +16,6 @@
       <div class="caption-full">
         <h4 class="pull-right">
           <%= campground.cost ? `\$${campground.cost}/night` : `FREE` %>
-
-
-          <%# if(campground.cost === 0) { %>
-          <!-- FREE -->
-          <%# }else{ %>
-          <!-- $<%#= campground.cost %>/night -->
-          <%# } %>
         </h4>
         <h4><a><%=campground.name%></a></h4>
         <p><%= campground.description %></p>
