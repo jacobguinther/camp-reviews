@@ -25,39 +25,55 @@ async function seedDB() {
   }
   async function addUsers() {
     let userArr = [];
-
-    users.forEach((user) => {
-      User.register(
+    users.forEach(async (user) => {
+      await User.register(
         { username: user.username, isAdmin: user.isAdmin },
         user.password,
-        (err, user) => {
+        async (err, user) => {
           if (err) {
             console.log(err);
           } else {
             userArr.push(user);
-            if (user.username === users[users.length - 1].username) {
-              campgrounds.forEach((campground) => {
-                comments.forEach((comment) => {
-                  console.log(userArr.length);
-                  const randomUser = (arr) => {
-                    return arr[Math.floor(Math.random() * arr.length)];
-                  };
-                  let random = ""
-                  random = randomUser(userArr)
-                  comment.author.id = random.id;
-                  comment.author.username = random.username;
-                  Comment.create(comment, async (err, com) => {
-                    campground.comments.push(com);
-                    if (campground.comments.length === comments.length) {
-                      campground.author.id = random.id;
-                      campground.author.username = random.username;
-                      await Campground.create(campground);
-                    }
+            console.log(user.username);
+            function checkAllUsers() {
+              let count = 0;
+              if(count === 500) return;
+              if(userArr.length !== 2) {
+                 setTimeout(checkAllUsers, 100); /* this checks the flag every 100 milliseconds*/
+              } else {
+                /* do something*/
+
+                if (userArr.length === 2 && user.username === users[users.length - 1].username) {
+                  campgrounds.forEach((campground) => {
+                    comments.forEach(async (comment) => {
+                      console.log(userArr.length);
+                      const randomUser = (arr) => {
+                        return arr[Math.floor(Math.random() * arr.length)];
+                      };
+                      let random = "";
+                      random = randomUser(userArr);
+                      comment.author.id = random.id;
+                      comment.author.username = random.username;
+                      await Comment.create(comment, async (err, com) => {
+                        campground.comments.push(com);
+                        if (campground.comments.length === comments.length) {
+                          campground.author.id = random.id;
+                          campground.author.username = random.username;
+                          await Campground.create(campground);
+                        }
+                      });
+                    });
                   });
-                });
-              });
-              console.log(`Added ${campgrounds.length} Campgrounds`);
-            }
+                  console.log(`Added ${campgrounds.length} Campgrounds`);
+                }
+
+
+              }
+              count += 100;
+          }
+          checkAllUsers();
+
+
           }
         }
       );
