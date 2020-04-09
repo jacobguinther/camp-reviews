@@ -41,8 +41,6 @@ async function seedDB() {
               if(userArr.length !== 2) {
                  setTimeout(checkAllUsers, 100); /* this checks the flag every 100 milliseconds*/
               } else {
-                /* do something*/
-
                 if (userArr.length === 2 && user.username === users[users.length - 1].username) {
                   campgrounds.forEach((campground) => {
                     comments.forEach(async (comment) => {
