@@ -34,20 +34,16 @@ async function seedDB() {
           if (err) {
             console.log(err);
           } else {
-            // console.log(user)
             userArr.push(user);
             if (user.username === users[users.length - 1].username) {
               campgrounds.forEach((campground) => {
                 comments.forEach((comment) => {
                   console.log(userArr.length);
-                  // console.log(userArr[0])
-                  // console.log(userArr[1])
                   const randomUser = (arr) => {
                     return arr[Math.floor(Math.random() * arr.length)];
                   };
                   let random = ""
                   random = randomUser(userArr)
-                  // console.log(random);
                   comment.author.id = random.id;
                   comment.author.username = random.username;
                   Comment.create(comment, async (err, com) => {
