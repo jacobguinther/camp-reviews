@@ -9,7 +9,7 @@ async function seedDB() {
   console.log(moment().format("MMMM Do YYYY, h:mm a"));
 
   // Delete Everything In Database
-  async function deleteEverything() {
+  async function deleteEverything(callback) {
     await Campground.deleteMany({}, () => {
       console.log("Removed Campgrounds!");
     });
@@ -21,101 +21,55 @@ async function seedDB() {
     await User.deleteMany({}, () => {
       console.log("Removed Users!");
     });
+    callback();
   }
-
   async function addUsers() {
+    let userArr = [];
+
     users.forEach((user) => {
-       User.register(
+      User.register(
         { username: user.username, isAdmin: user.isAdmin },
         user.password,
-        function (err, user) {
+        (err, user) => {
           if (err) {
             console.log(err);
+          } else {
+            // console.log(user)
+            userArr.push(user);
+            if (user.username === users[users.length - 1].username) {
+              campgrounds.forEach((campground) => {
+                comments.forEach((comment) => {
+                  console.log(userArr.length);
+                  // console.log(userArr[0])
+                  // console.log(userArr[1])
+                  const randomUser = (arr) => {
+                    return arr[Math.floor(Math.random() * arr.length)];
+                  };
+                  let random = ""
+                  random = randomUser(userArr)
+                  // console.log(random);
+                  comment.author.id = random.id;
+                  comment.author.username = random.username;
+                  Comment.create(comment, async (err, com) => {
+                    campground.comments.push(com);
+                    if (campground.comments.length === comments.length) {
+                      campground.author.id = random.id;
+                      campground.author.username = random.username;
+                      await Campground.create(campground);
+                    }
+                  });
+                });
+              });
+              console.log(`Added ${campgrounds.length} Campgrounds`);
+            }
           }
         }
       );
     });
     console.log(`Added ${users.length} Users`);
   }
-  deleteEverything();
-  addUsers();
-
-  const user = User.findOne();
-  // console.log(user);
-  const jacob = User.findOne({ username: "jgguinther09@gmail.com" }, (usr)=>console.log(usr));
-  // console.log(jacob);
-  // const tori =  await User.findOne({ username: "toridillon@yahoo.com" });
-  // console.log(tori);
-  // const arr = [jacob, tori]
-  
-  // Promise.all(arr)
-  // .then((values)=>{
-  //   // console.log(values);
-  //   console.log(values)
-  // })
-  // .catch((err)=>{
-  //   console.log(err)
-  // })
-
-  //     campgrounds.forEach((campground) => {
-  //       const { name, image, description, cost, location, lat, lng } = campground;
-  //       Campground.create(
-  //         {
-  //           name: name,
-  //           image: image,
-  //           description: description,
-  //           cost: cost,
-  //           author: {
-  //             id: jacob.id,
-  //             username: jacob.username,
-  //           },
-  //           location: location,
-  //           lat: lat,
-  //           lng: lng,
-  //         },
-  //         (err, campground) => {
-  //           if (err) {
-  //             console.log(err);
-  //             return res.render("register", { error: err.message });
-  //           } else {
-  //           }
-  //         }
-  //       )
-  //     });
-  //     console.log(`Added ${campgrounds.length} Campgrounds`);
+  await deleteEverything(addUsers);
 }
-
-//======================================
-
-// comments.forEach((comment) => {
-//   const { id, username } = jacob;
-//   Comment.create(comment, (err, comment) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       comment.author.id = id;
-//       comment.author.username = username;
-//       comment
-//         .save()
-//         .then(() => {
-//           campground.comments.push(comment.id);
-
-//           // campground.save((err) => {
-//           //   console.log(err);
-//           // });
-//           // console.log(campground.comments)
-//           // console.log(campground.comments)
-//           // console.log(comments)
-//           // console.log(comment)
-
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//         });
-//     }
-//   });
-
-// });
 
 const users = [
   { username: "jgguinther09@gmail.com", password: "password", isAdmin: false },
@@ -132,6 +86,11 @@ const campgrounds = [
     location: "Gallipolis, OH",
     lat: 38.8098,
     lng: 82.2024,
+    comments: [],
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
     name: "Desert Mesa",
@@ -142,6 +101,11 @@ const campgrounds = [
     location: "Gallipolis, OH",
     lat: 38.8098,
     lng: 82.2024,
+    comments: [],
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
     name: "Canyon Floor",
@@ -152,6 +116,11 @@ const campgrounds = [
     location: "Gallipolis, OH",
     lat: 38.8098,
     lng: 82.2024,
+    comments: [],
+    author: {
+      id: "",
+      username: "",
+    },
   },
 ];
 
@@ -159,22 +128,39 @@ const comments = [
   {
     text:
       "I'm baby mustache master cleanse sriracha brunch, bitters succulents PBR&B taxidermy literally humblebrag gochujang adaptogen artisan venmo tacos. Single-origin coffee celiac jianbing farm-to-table poke. Asymmetrical ramps twee godard photo booth. Brooklyn cray la croix taiyaki, roof party deep v microdosing. Shabby chic coloring book you probably haven't heard of them disrupt schlitz air plant. Vaporware air plant single-origin coffee microdosing schlitz knausgaard hexagon hella.",
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
-    text:
-      "Flexitarian activated charcoal church-key, hashtag brooklyn man braid letterpress banjo pour-over neutra artisan dreamcatcher meditation. Raclette pinterest mlkshk, palo santo chillwave iceland artisan kickstarter activated charcoal readymade tilde PBR&B kombucha narwhal. Fanny pack franzen bicycle rights swag chambray. Marfa enamel pin intelligentsia narwhal blog.",
+    text: "This place is great but I wish there was internet",
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
     text:
       "IPhone disrupt heirloom distillery. Butcher echo park slow-carb, lumbersexual godard fingerstache art party dreamcatcher mlkshk lomo franzen ethical. Salvia sustainable letterpress cred art party, VHS gastropub cloud bread drinking vinegar. Tumeric meh seitan raw denim leggings, blue bottle pour-over.",
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
-    text:
-      "Meggings authentic vinyl roof party small batch cardigan drinking vinegar. Heirloom knausgaard lumbersexual, semiotics twee actually cardigan helvetica subway tile. Hoodie health goth tofu poke. Venmo fingerstache drinking vinegar selvage kombucha meditation cray tote bag seitan church-key post-ironic.",
+    text: "Too many bugs",
+    author: {
+      id: "",
+      username: "",
+    },
   },
   {
-    text:
-      "Intelligentsia cred craft beer butcher man braid. Sartorial godard pop-up art party snackwave blue bottle vexillologist street art knausgaard schlitz lo-fi etsy gentrify kogi. Everyday carry mlkshk 8-bit, whatever vegan chicharrones keytar cronut unicorn deep v offal. Everyday carry woke letterpress blog 8-bit twee, salvia vinyl hot chicken. Distillery pinterest lo-fi edison bulb woke, kogi flannel live-edge chambray post-ironic squid snackwave.",
+    text: "Its pet friendly",
+    author: {
+      id: "",
+      username: "",
+    },
   },
 ];
 

@@ -19,7 +19,6 @@ router.get("/new", isLoggedIn, function (req, res) {
 
 //Comments Create
 router.post("/", isLoggedIn, function (req, res) {
-  //lookup campground using ID
   Campground.findById(req.params.id, function (err, campground) {
     if (err) {
       console.log(err);
