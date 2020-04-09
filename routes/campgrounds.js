@@ -88,11 +88,13 @@ router.get("/:id/edit", isLoggedIn, checkUserCampground, function(req, res){
 
 // PUT - updates campground in the database
 router.put("/:id", function(req, res){
-  geocoder.geocode(req.body.location, function (err, data) {
-    var lat = data.results[0].geometry.location.lat;
-    var lng = data.results[0].geometry.location.lng;
-    var location = data.results[0].formatted_address;
-    var newData = {name: req.body.name, image: req.body.image, description: req.body.description, cost: req.body.cost, location: location, lat: lat, lng: lng};
+  const {name, image, description, location, cost} = req.body
+  // geocoder.geocode(req.body.location, function (err, data) {
+    // var lat = data.results[0].geometry.location.lat;
+    // var lng = data.results[0].geometry.location.lng;
+    const lat = 38.8098;
+    const lng = 82.2024;
+    var newData = {name: name, image: image, description: description, cost: cost, location: location, lat: lat, lng: lng};
     Campground.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, campground){
         if(err){
             req.flash("error", err.message);
@@ -102,7 +104,7 @@ router.put("/:id", function(req, res){
             res.redirect("/campgrounds/" + campground._id);
         }
     });
-  });
+  // });
 });
 
 // DELETE - removes campground and its comments from the database
