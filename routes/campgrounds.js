@@ -16,13 +16,13 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-
 //INDEX - show all campgrounds
 router.get("/", (req, res) => {
   if (req.query.search && req.xhr) {
+    console.log(req.xhr)
     const regex = new RegExp(escapeRegex(req.query.search), "gi");
     // Get all campgrounds from DB
-    Campground.find({ name: regex }, function (err, allCampgrounds) {
+    Campground.find({ name: regex }, (err, allCampgrounds) => {
       if (err) {
         console.log(err);
       } else {
@@ -160,6 +160,5 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
     }
   );
 });
-
 
 module.exports = router;
