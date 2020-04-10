@@ -39,7 +39,7 @@ async function seedDB() {
               let count = 0;
               if(count === 500) return;
               if(userArr.length !== 2) {
-                 setTimeout(checkAllUsers, 100); /* this checks the flag every 100 milliseconds*/
+                 setTimeout(checkAllUsers, 100);
               } else {
                 if (userArr.length === 2 && user.username === users[users.length - 1].username) {
                   campgrounds.forEach((campground) => {
