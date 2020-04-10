@@ -26,8 +26,9 @@ async function seedDB() {
   async function addUsers() {
     let userArr = [];
     users.forEach(async (user) => {
+      const {username, email, isAdmin} = user;
       await User.register(
-        { username: user.username, isAdmin: user.isAdmin },
+        { username: username, email: email, isAdmin: isAdmin },
         user.password,
         async (err, user) => {
           if (err) {
@@ -37,14 +38,17 @@ async function seedDB() {
             console.log(user.username);
             function checkAllUsers() {
               let count = 0;
-              if(count === 500) return;
-              if(userArr.length !== 2) {
-                 setTimeout(checkAllUsers, 100);
+              if (count === 500) return;
+              if (userArr.length !== 2) {
+                setTimeout(checkAllUsers, 100);
               } else {
-                if (userArr.length === 2 && user.username === users[users.length - 1].username) {
+                if (
+                  userArr.length === 2 &&
+                  user.username === users[users.length - 1].username
+                ) {
+                  console.log("userArr: ", userArr.length);
                   campgrounds.forEach((campground) => {
                     comments.forEach(async (comment) => {
-                      console.log(userArr.length);
                       const randomUser = (arr) => {
                         return arr[Math.floor(Math.random() * arr.length)];
                       };
@@ -64,14 +68,10 @@ async function seedDB() {
                   });
                   console.log(`Added ${campgrounds.length} Campgrounds`);
                 }
-
-
               }
               count += 100;
-          }
-          checkAllUsers();
-
-
+            }
+            checkAllUsers();
           }
         }
       );
@@ -82,8 +82,18 @@ async function seedDB() {
 }
 
 const users = [
-  { username: "jgguinther09@gmail.com", password: "password", isAdmin: false },
-  { username: "toridillon@yahoo.com", password: "password", isAdmin: true },
+  {
+    username: "jgguinther",
+    email: "jgguinther09@gmail.com",
+    password: "password",
+    isAdmin: false,
+  },
+  {
+    username: "toridillon",
+    email: "toridillon@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
 ];
 
 const campgrounds = [
