@@ -5,7 +5,7 @@ const express = require("express"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserComment, isAdmin } = middleware;
 
-//Comments New
+// New
 router.get("/new", isLoggedIn, (req, res) => {
   // find campground by id
   Campground.findById(req.params.id, (err, campground) => {
@@ -17,7 +17,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   });
 });
 
-//Comments Create
+// Create
 router.post("/", isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
@@ -51,7 +51,8 @@ router.get("/:commentId/edit", isLoggedIn, checkUserComment, (req, res) => {
   });
 });
 
-router.put("/:commentId", isAdmin, (req, res) => {
+// Edit
+router.put("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
   Comment.findByIdAndUpdate(
     req.params.commentId,
     req.body.comment,
