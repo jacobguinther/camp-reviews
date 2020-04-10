@@ -4,7 +4,6 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
   passport = require("passport"),
-  cookieParser = require("cookie-parser"),
   LocalStrategy = require("passport-local"),
   flash = require("connect-flash"),
   User = require("./models/user"),
@@ -31,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
-app.use(cookieParser("secret"));
 //require moment
 app.locals.moment = require("moment");
 seedDB(); //seed the database
@@ -39,7 +37,7 @@ seedDB(); //seed the database
 // PASSPORT CONFIGURATION
 app.use(
   require("express-session")({
-    secret: "Once again Rusty wins cutest dog!",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })

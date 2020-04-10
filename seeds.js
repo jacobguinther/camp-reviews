@@ -42,9 +42,9 @@ async function seedDB() {
                  setTimeout(checkAllUsers, 100);
               } else {
                 if (userArr.length === 2 && user.username === users[users.length - 1].username) {
+                  console.log("userArr: ",userArr.length);
                   campgrounds.forEach((campground) => {
                     comments.forEach(async (comment) => {
-                      console.log(userArr.length);
                       const randomUser = (arr) => {
                         return arr[Math.floor(Math.random() * arr.length)];
                       };
