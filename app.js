@@ -12,7 +12,7 @@ const express = require("express"),
   methodOverride = require("method-override");
 
 //requiring routes
-var commentRoutes = require("./routes/comments"),
+const commentRoutes = require("./routes/comments"),
   campgroundRoutes = require("./routes/campgrounds"),
   indexRoutes = require("./routes/index");
 
@@ -45,7 +45,9 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+// passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
