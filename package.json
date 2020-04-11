@@ -8,12 +8,14 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
+    "compile:sass": "node-sass public/sass/custom.scss public/css/styles.css -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Colt Steele",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "bootstrap": "^4.4.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.2",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "ejs-lint": "^1.0.1",
-    "locus": "^2.0.4"
+    "locus": "^2.0.4",
+    "node-sass": "^4.13.1"
   }
 }

@@ -6,11 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>YelpCamp</title>
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="/stylesheets/main.css">
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
 </head>
 
 <body>
@@ -34,9 +30,9 @@
           <a class="nav-link" href="/register">Register</a>
         </li>
         <% } else { %>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><%= currentUser.username %></a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><%= currentUser.username %></a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -50,21 +46,14 @@
           </div>
         </li>
         <% } %>
-
-
-
       </ul>
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
     </div>
   </nav>
 
   <div class="container">
     <% if(error && error.length > 0) { %>
     <div class="alert alert-danger">
-      <p><%=error %></p>
+      <p><%= error %></p>
     </div>
     <% } %>
 
