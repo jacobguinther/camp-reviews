@@ -147,7 +147,7 @@ const campgrounds = [
 const comments = [
   {
     text:
-      "I'm baby mustache master cleanse sriracha brunch, bitters succulents PBR&B taxidermy literally humblebrag gochujang adaptogen artisan venmo tacos. Single-origin coffee celiac jianbing farm-to-table poke. Asymmetrical ramps twee godard photo booth. Brooklyn cray la croix taiyaki, roof party deep v microdosing. Shabby chic coloring book you probably haven't heard of them disrupt schlitz air plant. Vaporware air plant single-origin coffee microdosing schlitz knausgaard hexagon hella.",
+      "I caught a fish!",
     author: {
       id: "",
       username: "",
@@ -162,7 +162,7 @@ const comments = [
   },
   {
     text:
-      "IPhone disrupt heirloom distillery. Butcher echo park slow-carb, lumbersexual godard fingerstache art party dreamcatcher mlkshk lomo franzen ethical. Salvia sustainable letterpress cred art party, VHS gastropub cloud bread drinking vinegar. Tumeric meh seitan raw denim leggings, blue bottle pour-over.",
+      "Mushrooms Everywhere!",
     author: {
       id: "",
       username: "",
