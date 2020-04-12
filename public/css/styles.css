@@ -1,6 +1,9 @@
 .alert p {
   margin: 0; }
 
+.card-img-top {
+  height: 15em; }
+
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

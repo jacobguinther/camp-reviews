@@ -3,6 +3,10 @@ $spacer: 2rem;
     margin: 0;
   }
 
+  .card-img-top {
+    height: 15em;
+}
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 // /* Sticky footer styles
@@ -32,7 +36,9 @@ html {
   
   /* Thumbnail styles */
   .thumbnail img {
+    
       width: 100%;
+
       /* height: 174px; */
   }
   
