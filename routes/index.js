@@ -39,18 +39,21 @@ router.post("/register", (req, res) => {
 //show login form
 router.get("/login", (req, res) => {
   res.render("login", { page: "login" });
+  console.log(req.header('Referer'))
 });
 
 //handling login logic
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/campgrounds",
+    // successRedirect: "/campgrounds",
     failureRedirect: "/login",
     failureFlash: true,
     successFlash: "Welcome to YelpCamp!",
   }),
-  (req, res) => {}
+  (req, res) => {
+    res.redirect(req.session.returnTo || '/campgrounds')
+  }
 );
 
 // logout route
