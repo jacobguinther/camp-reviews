@@ -28,35 +28,69 @@
                 <h4 class="card-title"><%= campground.name %></h4>
                 <%- include('../functions') %>
                 <p class="card-text"><%= text_truncate(campground.description,100 ,"...") %></p>
-                <a href="/campgrounds/<%= campground._id %>" class="btn btn-secondary mt-auto">More Info</a>
+                <a href="/campgrounds/<%= current %>/<%= campground._id %>" class="btn btn-secondary mt-auto">More Info</a>
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <small class="text-muted"><%= campground.author.username %></small>
                 <small class="text-muted"><%=
                     moment(campground.createdAt).fromNow() %></small>
-              </div>
+            </div>
         </div>
     </div>
     <% }); %>
 </div>
 
+<% if (pages > 0) { %>
 <nav aria-label="Page navigation example">
     <ul class="pagination m-0 d-flex justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item"><a class="page-link text-secondary" href="#">1</a></li>
-      <li class="page-item"><a class="page-link text-secondary" href="#">2</a></li>
-      <li class="page-item"><a class="page-link text-secondary" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link  text-secondary" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
+        <% if (current == 1) { %>
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item">
+            <a class="page-link text-secondary" href="/campgrounds/1" aria-label="Previous">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        <% } %>
+        <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
+        <% if (i !== 1) { %>
+        <% } %>
+        <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+        <% if (i == current) { %>
+
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Current" tabindex="-1" aria-disabled="true">
+                <%= i %>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item"><a class="page-link text-secondary" href="/campgrounds/<%= i %>"><%= i %></a></li>
+        <% } %>
+        <% if (i == Number(current) + 2 && i < pages) { %>
+        <% } %>
+        <% } %>
+        <% if (current == pages) { %>
+
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Next" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item">
+            <a class="page-link text-secondary" href="/campgrounds/<%= pages %>" aria-label="Next">
+                <span>&raquo;</span>
+            </a>
+        </li>
+        <% } %>
     </ul>
-  </nav>
+</nav>
+
+<% } %>
 
 
 
