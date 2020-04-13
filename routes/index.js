@@ -52,7 +52,9 @@ router.post(
     successFlash: "Welcome to YelpCamp!",
   }),
   (req, res) => {
-    res.redirect(req.session.returnTo || '/campgrounds')
+    let lastpage = req.session.returnTo
+    req.session.returnTo = "";
+    res.redirect(lastpage || '/campgrounds')
   }
 );
 
