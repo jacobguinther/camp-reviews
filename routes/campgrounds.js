@@ -18,7 +18,7 @@ function escapeRegex(text) {
 
 //INDEX - SHOW ALL
 router.get("/", (req, res) => {
-  res.redirect("campgrounds/1")
+  res.redirect("campgrounds/page-1")
   // SEARCH FEATURE INACTIVE AND BROKEN
   // if (req.query.search && req.xhr) {
   //   console.log(req.xhr)
@@ -51,7 +51,8 @@ router.get("/", (req, res) => {
 
   // }
 });
-router.get("/:page", (req, res) => {
+
+router.get("/page-:page", (req, res) => {
   const perPage = 9;
   const page = req.params.page || 1;
 
@@ -82,6 +83,7 @@ router.get("/:page", (req, res) => {
       });
     });
 });
+
 
 //CREATE - add new campground to DB
 router.post("/", isLoggedIn, (req, res) => {
@@ -120,7 +122,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // SHOW - shows more info about one campground
-router.get("/*/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   //find the campground with provided ID
   Campground.findById(req.params.id)
     .populate("comments")
@@ -195,5 +197,7 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
     }
   );
 });
+
+
 
 module.exports = router;
