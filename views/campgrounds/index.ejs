@@ -5,7 +5,7 @@
         <h1><span class="glyphicon glyphicon-tent"></span> Welcome To YelpCamp!</h1>
         <p>View our hand-picked campgrounds from all over the world</p>
         <p>
-            <a class="btn btn-secondary btn-lg" href="/campgrounds/new">Add New Campground</a>
+            <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add New Campground</a>
         </p>
         <p>
             <form action="/campgrounds" method="GET" class="form-inline" id="campground-search">
@@ -20,21 +20,29 @@
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
     <% campgrounds.forEach((campground)=>{ %>
     <div class="col mb-4">
-        <div class="card">
+        <div class="card h-100">
             <a href="/campgrounds/<%= campground._id %>">
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
             </a>
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h4 class="card-title"><%= campground.name %></h4>
                 <%- include('../functions') %>
                 <p class="card-text"><%= text_truncate(campground.description,100 ,"...") %></p>
-                <p>
-                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-secondary">More Info</a>
-                </p>
+                <a href="/campgrounds/<%= campground._id %>" class="btn btn-secondary mt-auto">More Info</a>
             </div>
+            <div class="card-footer d-flex justify-content-between">
+                <small class="text-muted"><%= campground.author.username %></small>
+                <small class="text-muted"><%=
+                    moment(campground.createdAt).fromNow() %></small>
+              </div>
         </div>
     </div>
     <% }); %>
 </div>
+
+
+
+
+
 <%- include('../functions') %>
 <%- include('../partials/footer') %>
