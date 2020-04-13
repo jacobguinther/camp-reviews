@@ -28,7 +28,7 @@
                 <h4 class="card-title"><%= campground.name %></h4>
                 <%- include('../functions') %>
                 <p class="card-text"><%= text_truncate(campground.description,100 ,"...") %></p>
-                <a href="/campgrounds/<%= current %>/<%= campground._id %>" class="btn btn-secondary mt-auto">More Info</a>
+                <a href="/campgrounds/<%= campground._id %>" class="btn btn-secondary mt-auto">More Info</a>
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <small class="text-muted"><%= campground.author.username %></small>
@@ -51,7 +51,7 @@
         </li>
         <% } else { %>
         <li class="page-item">
-            <a class="page-link text-secondary" href="/campgrounds/1" aria-label="Previous">
+            <a class="page-link text-secondary" href="/campgrounds/page-1" aria-label="Previous">
                 <span>&laquo;</span>
             </a>
         </li>
@@ -68,7 +68,7 @@
             </a>
         </li>
         <% } else { %>
-        <li class="page-item"><a class="page-link text-secondary" href="/campgrounds/<%= i %>"><%= i %></a></li>
+        <li class="page-item"><a class="page-link text-secondary" href="/campgrounds/page-<%= i %>"><%= i %></a></li>
         <% } %>
         <% if (i == Number(current) + 2 && i < pages) { %>
         <% } %>
@@ -82,7 +82,7 @@
         </li>
         <% } else { %>
         <li class="page-item">
-            <a class="page-link text-secondary" href="/campgrounds/<%= pages %>" aria-label="Next">
+            <a class="page-link text-secondary" href="/campgrounds/page-<%= pages %>" aria-label="Next">
                 <span>&raquo;</span>
             </a>
         </li>
