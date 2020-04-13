@@ -1,68 +1,84 @@
 <%- include('../partials/header') %>
 
 <div class="row">
-  <div class="col-md-3">
+  <!-- <div class="col-md-3">
     <div class="list-group">
       <li class="list-group-item">Created By</li>
       <li class="list-group-item">Rating</li>
       <li class="list-group-item">Maps</li>
     </div>
     <div id="map"></div>
-  </div>
-  <div class="col-md-9">
-    <div class="thumbnail">
-      <img class="img-responsive" src="<%= campground.image %>" />
-      <div class="caption-full">
-        <h4 class="pull-right">
-          <%= campground.cost ? `\$${campground.cost}/night` : `FREE` %>
-        </h4>
-        <h4><a><%=campground.name%></a></h4>
-        <p><%= campground.description %></p>
-        <p>
-          <em>Submitted by: <%= campground.author.username %>, <%=
-            moment(campground.createdAt).fromNow() %></em>
-        </p>
+  </div> -->
+  <div class="col-md-9 mx-auto">
+    <div class="card mb-3">
+      <div class="thumbnail">
+        <img class="img-fluid" src="<%= campground.image %>" class="card-img-top" alt="...">
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title"><%=campground.name%></h5>
+          <p class="card-text text-muted">
+            <%= campground.cost ? `\$${campground.cost} / night` : `FREE` %>
+          </p>
+        </div>
+        <p class="card-text"><%= campground.description %></p>
+        <div class="d-flex justify-content-between align-items-end">
+          <p class="card-text m-0"><small class="text-muted">Submitted by: <%= campground.author.username %></small></p>
+          <p class="card-text m-0"><small class="text-muted"><%=
+            moment(campground.createdAt).fromNow() %></small></p>
+        </div>
+
         <% if (currentUser &&
         campground.author.id.equals(currentUser._id) || currentUser &&
         currentUser.isAdmin){ %>
-
-        <a class="btn btn-secondary" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+  
+        <a class="btn btn-secondary" role="button" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+  
         <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="delete-form">
           <button class="btn btn-secondary">Delete</button>
         </form>
         <% } %>
       </div>
-    </div>
-    <div class="well">
-      <div class="text-right">
-        <a class="btn btn-secondary" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
-      </div>
-      <hr />
-      <% campground.comments.forEach(function(comment){ %>
-      <div class="row">
-        <div class="col-md-12">
-          <strong><%= comment.author.username %></strong>
-          <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
-          <div>
-            <%= comment.text %> <% if(currentUser &&
-            comment.author.id.equals(currentUser._id) || currentUser &&
-            currentUser.isAdmin){ %>
-            <div class="pull-right">
-              <a href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit"
-                class="btn btn-sm btn-secondary">EDIT</a>
-              <form class="delete-form"
-                action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                <button class="btn btn-sm btn-secondary">DELETE</button>
-              </form>
-            </div>
-            <% } %>
-            <hr />
+      <hr class="m-0">
+      </hr>
+      <div class="card-body">
+          
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">Comments</h5>
+        <a class="btn btn-sm btn-secondary mb-3" role="button" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
           </div>
-        </div>
+
+
+
+        <ul class="list-group list-group-flush">
+
+          <% campground.comments.forEach(function(comment){ %>
+            <p class="card-text m-0"><small class="text-muted"><%= comment.author.username %></small></p>
+
+            <div class="d-flex justify-content-between">
+              <div class="mb-2">
+                <%= comment.text %> <% if(currentUser &&
+                  comment.author.id.equals(currentUser._id) || currentUser &&
+                  currentUser.isAdmin){ %>
+                <div class="pull-right">
+                  <a href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit"
+                    class="btn btn-sm btn-secondary">EDIT</a>
+                  <form class="delete-form"
+                    action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-secondary">DELETE</button>
+                  </form>
+                </div>
+                <% } %>
+              </div>
+              <p class="card-text"><small class="text-muted"><%=
+                moment(campground.createdAt).fromNow() %></small></p>
+            </div>
+            <% }) %>
+        </ul>
       </div>
-      <% }) %>
     </div>
   </div>
+
 </div>
 <script>
   function initMap() {
