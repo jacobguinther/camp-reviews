@@ -111,7 +111,8 @@ router.post("/", isLoggedIn, (req, res) => {
       console.log(err);
     } else {
       //redirect back to campgrounds page
-      res.redirect("/campgrounds");
+      req.flash("success", "Created a campground!");
+      res.redirect(`/campgrounds/${newlyCreated._id}`);
     }
   });
 });
@@ -129,7 +130,6 @@ router.get("/:id", (req, res) => {
     .exec((err, foundCampground) => {
       if (err || !foundCampground) {
         console.log(err);
-        req.flash("error", "Sorry, that campground does not exist!");
         return res.redirect("/campgrounds");
       }
       //render show template with that campground
