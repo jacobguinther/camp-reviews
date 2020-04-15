@@ -16,33 +16,31 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-//INDEX - SHOW ALL
+// INDEX - SHOW ALL
 router.get("/", (req, res) => {
   console.log("/ ROOT HIT");
   res.redirect("campgrounds/page-1");
 });
 
-// SHOW ALL CAMPGROUNDS
+// CAMPGROUND INDEX
 router.get("/page-:page", (req, res) => {
   const perPage = 9;
   const currentPage = req.params.page || 1;
-  const {search, category} = req.query;
+  
+  const { search, category } = req.query;
   const searchQueryValue = search;
   const categoryQueryValue = category;
   const searchQuery = Object.keys(req.query)[0];
   const categoryQuery = Object.keys(req.query)[1];
 
   const searchTerm = search || "";
-  const searchCategory = (category === "author" ? "author.username" : category);
+  const searchCategory = category === "author" ? "author.username" : category;
   let dbquery;
-  // console.log(Object.keys(req.query).length)
-  if(Object.keys(req.query).length){
+  if (Object.keys(req.query).length) {
     dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
-  }else{
+  } else {
     dbquery = {};
   }
-  // const dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
-  // const dbquery = {};
 
   Campground.find(dbquery, (err, allCampgrounds) => {
     // if (err) {
@@ -55,9 +53,7 @@ router.get("/page-:page", (req, res) => {
     .limit(perPage)
     .exec((err, campgrounds) => {
       Campground.countDocuments(dbquery).exec((err, count) => {
-
         const totalPages = Math.ceil(count / perPage) || 1;
-
         if (err) return next(err);
         res.render("campgrounds/index", {
           campgrounds,
@@ -72,48 +68,43 @@ router.get("/page-:page", (req, res) => {
     });
 });
 
-//CREATE - add new campground to DB
+// CREATE CAMPGROUND
 router.post("/", isLoggedIn, (req, res) => {
-  // get data from form and add to campgrounds array
   const { name, image, description, location, cost } = req.body;
+  const { _id: id, username } = req.user;
   const author = {
-    id: req.user._id,
-    username: req.user.username,
+    id,
+    username,
   };
   const lat = 38.8098;
   const lng = 82.2024;
   const newCampground = {
-    name: name,
-    image: image,
-    description: description,
-    cost: cost,
-    author: author,
-    location: location,
-    lat: lat,
-    lng: lng,
+    name,
+    image,
+    description,
+    cost,
+    author,
+    location,
+    lat,
+    lng,
   };
-  // Create a new campground and save to DB
   Campground.create(newCampground, (err, newlyCreated) => {
     if (err) {
       console.log(err);
     } else {
-      //redirect back to campgrounds page
       req.flash("success", "Created a campground!");
       res.redirect(`/campgrounds/id-${newlyCreated._id}`);
     }
   });
 });
 
-//NEW - show form to create new campground
+// NEW CAMPGROUND PAGE
 router.get("/new", isLoggedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 
-// SHOW - shows more info about one campground
-// router.get("/:id", (req, res) => {
+// SHOW CAMPGROUND
 router.get("/id-:id", (req, res) => {
-  console.log("SHOW CAMPGROUND ROUTE HIT");
-  //find the campground with provided ID
   Campground.findById(req.params.id)
     .populate("comments")
     .exec((err, foundCampground) => {
@@ -121,30 +112,28 @@ router.get("/id-:id", (req, res) => {
         console.log(err);
         return res.redirect("/campgrounds");
       }
-      //render show template with that campground
       res.render("campgrounds/show", { campground: foundCampground });
     });
 });
 
-// EDIT - shows edit form for a campground
+// EDIT CAMPGROUND PAGE
 router.get("/:id/edit", isLoggedIn, checkUserCampground, (req, res) => {
-  //render edit template with that campground
   res.render("campgrounds/edit", { campground: req.campground });
 });
 
-// PUT - updates campground in the database
+// UPDATE CAMPGROUND
 router.put("/:id", (req, res) => {
   const { name, image, description, location, cost } = req.body;
   const lat = 38.8098;
   const lng = 82.2024;
   const newData = {
-    name: name,
-    image: image,
-    description: description,
-    cost: cost,
-    location: location,
-    lat: lat,
-    lng: lng,
+    name,
+    image,
+    description,
+    cost,
+    location,
+    lat,
+    lng,
   };
   Campground.findByIdAndUpdate(
     req.params.id,
@@ -161,7 +150,7 @@ router.put("/:id", (req, res) => {
   );
 });
 
-// DELETE - removes campground and its comments from the database
+// DELETE CAMPGROUND
 router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
   Comment.remove(
     {
