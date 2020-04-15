@@ -5,9 +5,8 @@ const express = require("express"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserComment, isAdmin } = middleware;
 
-// New
+// CREATE COMMENT PAGE
 router.get("/new", isLoggedIn, (req, res) => {
-  // find campground by id
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
       console.log(err);
@@ -17,7 +16,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   });
 });
 
-// Create
+// CREATE COMMENT
 router.post("/", isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
@@ -28,11 +27,9 @@ router.post("/", isLoggedIn, (req, res) => {
         if (err) {
           console.log(err);
         } else {
-          //add username and id to comment
-          comment.author.id = req.user._id;
-          comment.author.username = req.user.username;
-          //save comment
-          console.log(`comment: ${comment}`);
+          const { _id: id, username } = req.user;
+          comment.author.id = id;
+          comment.author.username = username;
           comment.save();
           campground.comments.push(comment);
           campground.save();
@@ -44,6 +41,7 @@ router.post("/", isLoggedIn, (req, res) => {
   });
 });
 
+// UPDATE COMMENT PAGE
 router.get("/:commentId/edit", isLoggedIn, checkUserComment, (req, res) => {
   res.render("comments/edit", {
     campground_id: req.params.id,
@@ -51,7 +49,7 @@ router.get("/:commentId/edit", isLoggedIn, checkUserComment, (req, res) => {
   });
 });
 
-// Edit
+// UPDATE COMMENT
 router.put("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
   Comment.findByIdAndUpdate(
     req.params.commentId,
@@ -67,8 +65,8 @@ router.put("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
   );
 });
 
+// DELETE COMMENT
 router.delete("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
-  // find campground, remove comment from comments array, delete comment in db
   Campground.findByIdAndUpdate(
     req.params.id,
     {

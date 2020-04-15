@@ -16,7 +16,7 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-// INDEX - SHOW ALL
+// CAMPGROUND INDEX ROOT
 router.get("/", (req, res) => {
   console.log("/ ROOT HIT");
   res.redirect("campgrounds/page-1");
@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 router.get("/page-:page", (req, res) => {
   const perPage = 9;
   const currentPage = req.params.page || 1;
-  
+
   const { search, category } = req.query;
   const searchQueryValue = search;
   const categoryQueryValue = category;
@@ -42,12 +42,8 @@ router.get("/page-:page", (req, res) => {
     dbquery = {};
   }
 
-  Campground.find(dbquery, (err, allCampgrounds) => {
-    // if (err) {
-    //   console.log(err);
-    // } else {
-    //
-    // }
+  Campground.find(dbquery, (err) => {
+    if(err){console.log(err)}
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
@@ -66,6 +62,11 @@ router.get("/page-:page", (req, res) => {
         });
       });
     });
+});
+
+// CREATE CAMPGROUND PAGE
+router.get("/new", isLoggedIn, (req, res) => {
+  res.render("campgrounds/new");
 });
 
 // CREATE CAMPGROUND
@@ -98,25 +99,7 @@ router.post("/", isLoggedIn, (req, res) => {
   });
 });
 
-// NEW CAMPGROUND PAGE
-router.get("/new", isLoggedIn, (req, res) => {
-  res.render("campgrounds/new");
-});
-
-// SHOW CAMPGROUND
-router.get("/id-:id", (req, res) => {
-  Campground.findById(req.params.id)
-    .populate("comments")
-    .exec((err, foundCampground) => {
-      if (err || !foundCampground) {
-        console.log(err);
-        return res.redirect("/campgrounds");
-      }
-      res.render("campgrounds/show", { campground: foundCampground });
-    });
-});
-
-// EDIT CAMPGROUND PAGE
+// UPDATE CAMPGROUND PAGE
 router.get("/:id/edit", isLoggedIn, checkUserCampground, (req, res) => {
   res.render("campgrounds/edit", { campground: req.campground });
 });
@@ -174,6 +157,19 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
       }
     }
   );
+});
+
+// SHOW CAMPGROUND
+router.get("/id-:id", (req, res) => {
+  Campground.findById(req.params.id)
+    .populate("comments")
+    .exec((err, foundCampground) => {
+      if (err || !foundCampground) {
+        console.log(err);
+        return res.redirect("/campgrounds");
+      }
+      res.render("campgrounds/show", { campground: foundCampground });
+    });
 });
 
 module.exports = router;
