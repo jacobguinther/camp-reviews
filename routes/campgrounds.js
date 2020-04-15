@@ -18,72 +18,59 @@ function escapeRegex(text) {
 
 //INDEX - SHOW ALL
 router.get("/", (req, res) => {
-  res.redirect("campgrounds/page-1")
-  // SEARCH FEATURE INACTIVE AND BROKEN
-  // if (req.query.search && req.xhr) {
-  //   console.log(req.xhr)
-  //   const regex = new RegExp(escapeRegex(req.query.search), "gi");
-  //   // Get all campgrounds from DB
-  //   Campground.find({ name: regex }, (err, allCampgrounds) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       res.status(200).json(allCampgrounds);
-  //     }
-  //   });
-  // } else {
-  // Get all campgrounds from DB
-
-  // Campground.find({}, (err, allCampgrounds) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     if (req.xhr) {
-  //       res.json(allCampgrounds);
-  //     } else {
-  //       res.render("campgrounds/index", {
-  //         campgrounds: allCampgrounds,
-  //         page: "campgrounds",
-  //       });
-  //     }
-  //   }
-  // });
-
-  // }
+  console.log("/ ROOT HIT");
+  res.redirect("campgrounds/page-1");
 });
 
+// SHOW ALL CAMPGROUNDS
 router.get("/page-:page", (req, res) => {
   const perPage = 9;
-  const page = req.params.page || 1;
+  const currentPage = req.params.page || 1;
+  const {search, category} = req.query;
+  const searchQueryValue = search;
+  const categoryQueryValue = category;
+  const searchQuery = Object.keys(req.query)[0];
+  const categoryQuery = Object.keys(req.query)[1];
 
-  Campground.find({}, (err, allCampgrounds) => {
+  const searchTerm = search || "";
+  const searchCategory = (category === "author" ? "author.username" : category);
+  let dbquery;
+  // console.log(Object.keys(req.query).length)
+  if(Object.keys(req.query).length){
+    dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
+  }else{
+    dbquery = {};
+  }
+  // const dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
+  // const dbquery = {};
+
+  Campground.find(dbquery, (err, allCampgrounds) => {
     // if (err) {
     //   console.log(err);
     // } else {
-    //   if (req.xhr) {
-    //     res.json(allCampgrounds);
-    //   } else {
-    //     res.render("campgrounds/index", {
-    //       campgrounds: allCampgrounds,
-    //       page: "campgrounds",
-    //     });
-    //   }
+    //
     // }
   })
-    .skip(perPage * page - perPage)
+    .skip(perPage * currentPage - perPage)
     .limit(perPage)
     .exec((err, campgrounds) => {
-      Campground.count().exec((err, count) => {
+      Campground.countDocuments(dbquery).exec((err, count) => {
+
+        const totalPages = Math.ceil(count / perPage) || 1;
+
         if (err) return next(err);
         res.render("campgrounds/index", {
-          campgrounds: campgrounds,
-          current: page,
-          pages: Math.ceil(count / perPage),
+          campgrounds,
+          currentPage,
+          totalPages,
+          searchQuery,
+          searchQueryValue,
+          categoryQuery,
+          categoryQueryValue,
         });
       });
     });
 });
-
 
 //CREATE - add new campground to DB
 router.post("/", isLoggedIn, (req, res) => {
@@ -112,7 +99,7 @@ router.post("/", isLoggedIn, (req, res) => {
     } else {
       //redirect back to campgrounds page
       req.flash("success", "Created a campground!");
-      res.redirect(`/campgrounds/${newlyCreated._id}`);
+      res.redirect(`/campgrounds/id-${newlyCreated._id}`);
     }
   });
 });
@@ -123,7 +110,9 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // SHOW - shows more info about one campground
-router.get("/:id", (req, res) => {
+// router.get("/:id", (req, res) => {
+router.get("/id-:id", (req, res) => {
+  console.log("SHOW CAMPGROUND ROUTE HIT");
   //find the campground with provided ID
   Campground.findById(req.params.id)
     .populate("comments")
@@ -166,7 +155,7 @@ router.put("/:id", (req, res) => {
         res.redirect("back");
       } else {
         req.flash("success", "Successfully Updated!");
-        res.redirect("/campgrounds/" + campground._id);
+        res.redirect("/campgrounds/id-" + campground._id);
       }
     }
   );
@@ -197,7 +186,5 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
     }
   );
 });
-
-
 
 module.exports = router;
