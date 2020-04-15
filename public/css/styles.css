@@ -4688,12 +4688,12 @@ a.close.disabled {
 .align-text-top {
   vertical-align: text-top !important; }
 
-.bg-primary {
+.bg-secondary {
   background-color: #007bff !important; }
 
-a.bg-primary:hover, a.bg-primary:focus,
-button.bg-primary:hover,
-button.bg-primary:focus {
+a.bg-secondary:hover, a.bg-secondary:focus,
+button.bg-secondary:hover,
+button.bg-secondary:focus {
   background-color: #0062cc !important; }
 
 .bg-secondary {
@@ -7015,10 +7015,10 @@ button.bg-dark:focus {
 .text-white {
   color: #fff !important; }
 
-.text-primary {
+.text-secondary {
   color: #007bff !important; }
 
-a.text-primary:hover, a.text-primary:focus {
+a.text-secondary:hover, a.text-secondary:focus {
   color: #0056b3 !important; }
 
 .text-secondary {
