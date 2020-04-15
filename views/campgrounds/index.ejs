@@ -1,37 +1,6 @@
 <%- include('../partials/header') %>
 
-<header class="jumbotron">
-    <div class="container">
-        <h1><span class="glyphicon glyphicon-tent"></span> Welcome To YelpCamp!</h1>
-        <p>View our hand-picked campgrounds from all over the world</p>
-        <p>
-            <a class="btn btn-secondary btn-lg" href="/campgrounds/new">Add New Campground</a>
-        </p>
-            <form action="/campgrounds/page-1" method="GET" class="" id="campground-search">
-                <div class="form-row">
-                    <div class="col-md-4 p-0">
-                        <input type="text" id="search" name="search" placeholder="Campground search..."
-                            class="form-control" value="<%= searchQueryValue %>">
-                    </div>
-                    <div class="col p-0 ml-2">
-                        <button class="btn btn-secondary" type="submit">Search</button>
-                    </div>
-                </div>
-                <div class="form-row mt-2">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="category" id="radioTitle" value="name"
-                            <%= (categoryQueryValue === undefined || "name") ? "checked" : "" %>>
-                        <label class="form-check-label" for="radioName">Name</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="category" id="radioAuthor" value="author"
-                            <%= categoryQueryValue === ("author" || undefined) ? "checked" : "" %>>
-                        <label class="form-check-label" for="radioAuthor">Author</label>
-                    </div>
-                </div>
-            </form>
-    </div>
-</header>
+
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
     <% if(campgrounds){ %>
     <% campgrounds.forEach((campground)=>{ %>
