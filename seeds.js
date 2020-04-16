@@ -59,9 +59,10 @@ async function seedDB() {
                   for (let i = 0; i < numCampgrounds; i++) {
                     let randomCampground = randomIndex(campgrounds);
                     let commentsArr = [];
-                    let randomUser = randomIndex(userArr);
+                    let randomUser = {};
 
                     comments.forEach((comment) => {
+                      randomUser = randomIndex(userArr);
                       comment.author.id = randomUser.id;
                       comment.author.username = randomUser.username;
                       commentsArr.push(comment)
