@@ -1,7 +1,8 @@
 
 
 $theme-colors: (
-  "primary": gray,
+  // "primary": gray,
+  "primary": #465768,
 // "primary": ,
 // "secondary",
 // "success": ,
@@ -56,7 +57,7 @@ body {
 /* This is the checked state */
 .custom-radio .custom-control-input:checked~.custom-control-label::before,
 .custom-radio .custom-control-input:checked~.custom-control-label::after {
-  background-color: gray;  /* green */
+  background-color: #465768;  /* green */
   /* this bg image SVG is just a white circle, you can replace it with any valid SVG code */
   border-radius: 50%;
 }
