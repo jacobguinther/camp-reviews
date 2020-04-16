@@ -1,8 +1,21 @@
-$spacer: 2rem;
 
-// $list-group-action-active-color: #000;
-// $list-group-action-active-bg: #000;
+
+$theme-colors: (
+  "primary": gray,
+// "primary": ,
+// "secondary",
+// "success": ,
+// "info":    ,
+// "warning": ,
+  "danger": #ff4136,
+// "light":,,
+// "dark": ,
+);
+
+$spacer: 2rem;
 $component-active-bg: rgba(#343a40, .5);
+
+
 body {
   background-color: #fff !important;
 }
@@ -16,7 +29,6 @@ body {
     background-size: cover;
 }
 .jumbotron {
-  // background-image: url("https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80")
   background-image: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%), url("https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80");
 
 }
@@ -27,6 +39,32 @@ body {
 
   .card-img-top {
     height: 15em;
+}
+// input[type="radio"]:checked{
+//   background-color: green !important;
+//   color: green !important;
+// }
+// input[type="radio"]:active{
+//   background-color: green !important;
+//   color: green !important;
+// }
+
+.custom-radio .custom-control-label::before {
+  background-color: #fff;  /* orange */
+}
+
+/* This is the checked state */
+.custom-radio .custom-control-input:checked~.custom-control-label::before,
+.custom-radio .custom-control-input:checked~.custom-control-label::after {
+  background-color: gray;  /* green */
+  /* this bg image SVG is just a white circle, you can replace it with any valid SVG code */
+  border-radius: 50%;
+}
+
+/* active state i.e. displayed while the mouse is being pressed down */
+.custom-radio .custom-control-input:active ~ .custom-control-label::before {
+  color: #fff;
+  background-color: #ff0000; /* red */
 }
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";

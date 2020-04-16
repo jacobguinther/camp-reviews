@@ -33,10 +33,10 @@
         campground.author.id.equals(currentUser._id) || currentUser &&
         currentUser.isAdmin){ %>
 
-        <a class="btn btn-sm btn-secondary" role="button" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+        <a class="btn btn-sm btn-primary" role="button" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
 
         <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="delete-form">
-          <button class="btn btn-sm btn-secondary">Delete</button>
+          <button class="btn btn-sm btn-primary">Delete</button>
         </form>
         <% } %>
       </div>
@@ -59,10 +59,10 @@
                   currentUser.isAdmin){ %>
               <div class="pull-right">
                 <a href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit"
-                  class="btn btn-sm btn-secondary">EDIT</a>
+                  class="btn btn-sm btn-primary">EDIT</a>
                 <form class="delete-form"
                   action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                  <button class="btn btn-sm btn-secondary">DELETE</button>
+                  <button class="btn btn-sm btn-primary">DELETE</button>
                 </form>
               </div>
               <% } %>
@@ -76,7 +76,7 @@
       <hr class="m-0">
       </hr>
       <div class="card-body d-flex">
-        <a class="btn btn-sm btn-secondary" role="button"
+        <a class="btn btn-sm btn-primary" role="button"
             href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
         </div>
     </div>
