@@ -15,7 +15,6 @@ async function seedDB() {
   console.clear();
   // console.log("name", faker.hacker.adjective(), faker.hacker.noun());
   console.log(moment().format("MMMM Do YYYY, h:mm a"));
-
   // Delete Everything In Database
   async function deleteEverything(callback) {
     await Campground.deleteMany({}, () => {
