@@ -2,31 +2,31 @@
 
 <header class="jumbotron bg-cover">
     <div class="container">
-        <h1 class="text-white">Welcome To YelpCamp!</h1>
-        <p class="text-white">View our hand-picked campgrounds from all over the world</p>
+        <h1 class="text-white text-shadow">Welcome To YelpCamp!</h1>
+        <p class="text-white text-shadow">View our hand-picked campgrounds from all over the world</p>
         <p>
-            <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add New Campground</a>
+            <a class="btn btn-primary btn-lg btn-shadow" href="/campgrounds/new">Add New Campground</a>
         </p>
         <form action="/campgrounds/page-1" method="GET" class="" id="campground-search">
             <div class="form-row">
                 <div class="col-md-4 p-0">
-                    <input type="text" id="search" name="search" placeholder="Campground search..." class="form-control"
+                    <input type="text" id="search" name="search" placeholder="Campground search..." class="btn-shadow form-control"
                         value="<%= searchQueryValue %>">
                 </div>
                 <div class="col p-0 ml-2">
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <button class="btn btn-primary btn-shadow" type="submit">Search</button>
                 </div>
             </div>
             <div class="form-row mt-2">
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="radioName" name="category" class="custom-control-input" value="name"
                         <%= (categoryQueryValue === undefined || "name") ? "checked" : "" %>>
-                    <label class="custom-control-label text-white" for="radioName">Name</label>
+                    <label class="custom-control-label text-white radio-text-shadow" for="radioName">Name</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="radioAuthor" name="category" class="custom-control-input" value="author"
                         <%= categoryQueryValue === ("author" || undefined) ? "checked" : "" %>>
-                    <label class="custom-control-label text-white" for="radioAuthor">Author</label>
+                    <label class="custom-control-label text-white radio-text-shadow" for="radioAuthor">Author</label>
                 </div>
             </div>
         </form>

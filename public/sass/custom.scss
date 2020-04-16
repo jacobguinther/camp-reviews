@@ -41,6 +41,15 @@ body {
   background-color: #fff;
   box-shadow: 0 0 5px #141609;
 }
+.btn-shadow{
+  box-shadow: 0 0 15px #66595A;
+}
+.text-shadow {
+  text-shadow: 2px 2px 10px #66595A;
+}
+.radio-text-shadow {
+  text-shadow: 2px 2px 10px #141609;
+}
 
 /* This is the checked state */
 .custom-radio .custom-control-input:checked~.custom-control-label::before,
