@@ -7,11 +7,6 @@ const faker = require("faker");
 
 async function seedDB() {
   const numCampgrounds = 30;
-
-  const randomIndex = (arr) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-  
   console.clear();
   // console.log("name", faker.hacker.adjective(), faker.hacker.noun());
   console.log(moment().format("MMMM Do YYYY, h:mm a"));
@@ -54,9 +49,16 @@ async function seedDB() {
                   user.username === users[users.length - 1].username
                 ) {
                   console.log("userArr: ", userArr.length);
-                  // campgrounds.forEach((randomCampground) => {
                   for (let i = 0; i < numCampgrounds; i++) {
-                    let randomCampground = randomIndex(campgrounds);
+                    if (i % campgrounds.length === 0) shuffle(campgrounds);
+                    let randomCampground = {};
+
+                    if (campgrounds[i]) {
+                      randomCampground = campgrounds[i];
+                    } else {
+                      randomCampground = campgrounds[i % campgrounds.length];
+                    }
+                    // randomCampground = randomIndex(campgrounds);
                     let commentsArr = [];
                     let randomUser = {};
 
@@ -64,19 +66,17 @@ async function seedDB() {
                       randomUser = randomIndex(userArr);
                       comment.author.id = randomUser.id;
                       comment.author.username = randomUser.username;
-                      commentsArr.push(comment)
+                      commentsArr.push(comment);
                     });
 
                     Comment.create(commentsArr, async (err, allComments) => {
                       randomCampground.comments = allComments;
-                      // console.log(randomCampground.comments.length)
-                        randomCampground.author.id = randomUser.id;
-                        randomCampground.author.username =
-                          randomUser.username;
-                        await Campground.create(randomCampground);
+                      randomCampground.author.id = randomUser.id;
+                      randomCampground.author.username = randomUser.username;
+                      await Campground.create(randomCampground);
                     });
                   }
-                  
+
                   console.log(`Added ${numCampgrounds} Campgrounds`);
                 }
               }
@@ -92,6 +92,19 @@ async function seedDB() {
   await deleteEverything(addUsers);
   // await deleteEverything(()=>{console.log("done")});
 }
+
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i);
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+};
+
+const randomIndex = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
 
 const users = [
   {
