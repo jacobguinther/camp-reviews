@@ -37,13 +37,19 @@ router.get("/page-:page", (req, res) => {
   const searchCategory = category === "author" ? "author.username" : category;
   let dbquery;
   if (Object.keys(req.query).length) {
-    dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
-  } else {
-    dbquery = {};
-  }
-
+    if(req.query.search.length === 0){
+      dbquery = {};
+      console.log("no length");
+      res.redirect("/campgrounds/page-1");
+      return;
+    }else{
+      dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
+    }
+  } 
   Campground.find(dbquery, (err) => {
-    if(err){console.log(err)}
+    if (err) {
+      console.log(err);
+    }
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
