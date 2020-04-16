@@ -45,7 +45,7 @@ body {
 /* This is the checked state */
 .custom-radio .custom-control-input:checked~.custom-control-label::before,
 .custom-radio .custom-control-input:checked~.custom-control-label::after {
-  background-color: #38475E;
+  background-color: #38475E;  
   box-shadow: 0 0 10px #141609;
   /* this bg image SVG is just a white circle, you can replace it with any valid SVG code */
   border-radius: 50%;
