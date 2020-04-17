@@ -3,17 +3,17 @@ const express = require("express"),
   passport = require("passport"),
   User = require("../models/user");
 
-//root route
+// ROOT
 router.get("/", (req, res) => {
   res.render("landing");
 });
 
-// show register form
+// REGISTER USER PAGE
 router.get("/register", (req, res) => {
   res.render("register", { page: "register" });
 });
 
-//handle sign up logic
+// REGISTER USER
 router.post("/register", (req, res) => {
   const { username, email } = req.body;
   const newUser = new User({ username: username, email: email });
@@ -36,24 +36,29 @@ router.post("/register", (req, res) => {
   });
 });
 
-//show login form
+// LOGIN USER PAGE
 router.get("/login", (req, res) => {
   res.render("login", { page: "login" });
+  console.log(req.header('Referer'))
 });
 
-//handling login logic
+// LOGIN USER
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/campgrounds",
+    // successRedirect: "/campgrounds",
     failureRedirect: "/login",
     failureFlash: true,
     successFlash: "Welcome to YelpCamp!",
   }),
-  (req, res) => {}
+  (req, res) => {
+    let lastpage = req.session.returnTo
+    req.session.returnTo = "";
+    res.redirect(lastpage || '/campgrounds')
+  }
 );
 
-// logout route
+// LOGOUT USER
 router.get("/logout", (req, res) => {
   req.logout();
   req.flash("success", "See you later!");

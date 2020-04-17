@@ -5,9 +5,8 @@ const express = require("express"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserComment, isAdmin } = middleware;
 
-//Comments New
+// CREATE COMMENT PAGE
 router.get("/new", isLoggedIn, (req, res) => {
-  // find campground by id
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
       console.log(err);
@@ -17,7 +16,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   });
 });
 
-//Comments Create
+// CREATE COMMENT
 router.post("/", isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
@@ -28,22 +27,21 @@ router.post("/", isLoggedIn, (req, res) => {
         if (err) {
           console.log(err);
         } else {
-          //add username and id to comment
-          comment.author.id = req.user._id;
-          comment.author.username = req.user.username;
-          //save comment
-          console.log(`comment: ${comment}`);
+          const { _id: id, username } = req.user;
+          comment.author.id = id;
+          comment.author.username = username;
           comment.save();
           campground.comments.push(comment);
           campground.save();
           req.flash("success", "Created a comment!");
-          res.redirect("/campgrounds/" + campground._id);
+          res.redirect("/campgrounds/id-" + campground._id);
         }
       });
     }
   });
 });
 
+// UPDATE COMMENT PAGE
 router.get("/:commentId/edit", isLoggedIn, checkUserComment, (req, res) => {
   res.render("comments/edit", {
     campground_id: req.params.id,
@@ -51,7 +49,8 @@ router.get("/:commentId/edit", isLoggedIn, checkUserComment, (req, res) => {
   });
 });
 
-router.put("/:commentId", isAdmin, (req, res) => {
+// UPDATE COMMENT
+router.put("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
   Comment.findByIdAndUpdate(
     req.params.commentId,
     req.body.comment,
@@ -60,14 +59,14 @@ router.put("/:commentId", isAdmin, (req, res) => {
         console.log(err);
         res.render("edit");
       } else {
-        res.redirect("/campgrounds/" + req.params.id);
+        res.redirect("/campgrounds/id-" + req.params.id);
       }
     }
   );
 });
 
+// DELETE COMMENT
 router.delete("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
-  // find campground, remove comment from comments array, delete comment in db
   Campground.findByIdAndUpdate(
     req.params.id,
     {
@@ -87,7 +86,7 @@ router.delete("/:commentId", isLoggedIn, checkUserComment, (req, res) => {
             return res.redirect("/");
           }
           req.flash("error", "Comment deleted!");
-          res.redirect("/campgrounds/" + req.params.id);
+          res.redirect("/campgrounds/id-" + req.params.id);
         });
       }
     }

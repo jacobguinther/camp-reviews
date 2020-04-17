@@ -19,7 +19,7 @@ const commentRoutes = require("./routes/comments"),
 // assign mongoose promise library and connect to database
 mongoose.Promise = global.Promise;
 
-const databaseUri = process.env.MONGODB_URI || "mongodb://localhost/yelp_camp";
+const databaseUri = `${process.env.MONGODB_URI}/yelpcamp` || "mongodb://localhost/yelp_camp";
 
 mongoose
   .connect(databaseUri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -30,6 +30,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use((req, res, next) => {
+  const test = /\?[^]*\//.test(req.url);
+  if (req.url.substr(-1) === '/' && req.url.length > 1 && !test)
+    res.redirect(301, req.url.slice(0, -1));
+  else
+    next();
+});
 //require moment
 app.locals.moment = require("moment");
 seedDB(); //seed the database
