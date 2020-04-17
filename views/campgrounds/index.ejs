@@ -1,36 +1,119 @@
-<%- include('../partials/header') %> 
+<%- include('../partials/header') %>
 
-     <header class="jumbotron">
-         <div class="container">
-             <h1><span class="glyphicon glyphicon-tent"></span> Welcome To YelpCamp!</h1>
-             <p>View our hand-picked campgrounds from all over the world</p>
-             <p>
-                <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add New Campground</a>
-             </p>
-              <p>
-              <form action="/campgrounds" method="GET" class="form-inline" id="campground-search">
-                <div class="form-group">
-                  <input type="text" name="search" placeholder="Campground search..." class="form-control">
+<header class="jumbotron bg-cover">
+    <div class="container">
+        <h1 class="text-white text-shadow">Welcome To YelpCamp!</h1>
+        <p class="text-white text-shadow">View our hand-picked campgrounds from all over the world</p>
+        <p>
+            <a class="btn btn-primary btn-lg btn-shadow" href="/campgrounds/new">Add New Campground</a>
+        </p>
+        <form action="/campgrounds/page-1" method="GET" class="" id="campground-search">
+            <div class="form-row">
+                <div class="col-md-4 p-0">
+                    <input type="text" id="search" name="search" placeholder="Campground search..." class="btn-shadow form-control"
+                        value="<%= searchQueryValue %>">
                 </div>
-              </form>
-             </p>
-         </div>
-     </header>
-     
-     <div class="row text-center flex-wrap" id="campground-grid">
-        <% campgrounds.forEach(function(campground){ %>
-            <div class="col-md-3 col-sm-6">
-                <div class="thumbnail">
-                   <img style="height: 174px;" src="<%= campground.image %>">
-                   <div class="caption">
-                       <h4><%= campground.name %></h4>
-                   </div>
-                   <p>
-                       <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
-                   </p>
+                <div class="col p-0 ml-2">
+                    <button class="btn btn-primary btn-shadow" type="submit">Search</button>
                 </div>
             </div>
-        <% }); %>
+            <div class="form-row mt-2">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="radioName" name="category" class="custom-control-input" value="name"
+                        <%= (categoryQueryValue === undefined || "name") ? "checked" : "" %>>
+                    <label class="custom-control-label text-white radio-text-shadow" for="radioName">Name</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="radioAuthor" name="category" class="custom-control-input" value="author"
+                        <%= categoryQueryValue === ("author" || undefined) ? "checked" : "" %>>
+                    <label class="custom-control-label text-white radio-text-shadow" for="radioAuthor">Author</label>
+                </div>
+            </div>
+        </form>
     </div>
+</header>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+    <% if(campgrounds){ %>
+    <% campgrounds.forEach((campground)=>{ %>
+    <div class="col mb-4">
+        <div class="card h-100 shadow-sm">
+            <a href="/campgrounds/id-<%= campground._id %>">
+                <img src="<%= campground.image %>" class="card-img-top" alt="...">
+            </a>
+            <div class="card-body d-flex flex-column">
+                <h4 class="card-title"><%= campground.name %></h4>
+                <%- include('../functions') %>
+                <p class="card-text"><%= text_truncate(campground.description,100 ,"...") %></p>
+                <a href="/campgrounds/id-<%= campground._id %>" class="btn btn-primary mt-auto">More Info</a>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <small class="text-muted"><%= campground.author.username %></small>
+                <small class="text-muted"><%=
+                    moment(campground.createdAt).fromNow() %></small>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+    <% } %>
+</div>
+<% if (totalPages > 1) { %>
+<nav aria-label="Page navigation example">
+    <ul class="pagination m-0 d-flex justify-content-center">
+        <% if (currentPage == 1) { %>
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item">
+            <a class="page-link text-primary"
+                href="/campgrounds/page-1<%= searchQuery ? `?${searchQuery}=${searchQueryValue}&${categoryQuery}=${categoryQueryValue}` : "" %>"
+                aria-label=" Previous">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        <% } %>
+        <% var i = (Number(currentPage) > 3 ? Number(currentPage) - 2 : 1) %>
+        <% if (i !== 1) { %>
+        <% } %>
+        <% for (; i <= (Number(currentPage) + 2) && i <= totalPages; i++) { %>
+        <% if (i == currentPage) { %>
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Current" tabindex="-1" aria-disabled="true">
+                <%= i %>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item"><a class="page-link text-primary"
+                href="/campgrounds/page-<%= i %><%= searchQuery ? `?${searchQuery}=${searchQueryValue}&${categoryQuery}=${categoryQueryValue}` : "" %>"><%= i %></a>
+        </li>
+        <% } %>
+        <% if (i == Number(currentPage) + 2 && i < totalPages) { %>
+        <% } %>
+        <% } %>
+        <% if (currentPage == totalPages) { %>
+        <li class="page-item disabled">
+            <a class="page-link bg-light" href="#" aria-label="Next" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <% } else { %>
+        <li class="page-item">
+            <a class="page-link text-primary"
+                href="/campgrounds/page-<%= totalPages %><%= searchQuery ? `?${searchQuery}=${searchQueryValue}&${categoryQuery}=${categoryQueryValue}` : "" %>"
+                aria-label="Next">
+                <span>&raquo;</span>
+            </a>
+        </li>
+        <% } %>
+    </ul>
+</nav>
+<% } %>
 
+
+
+
+
+<%- include('../functions') %>
 <%- include('../partials/footer') %>
