@@ -2,12 +2,12 @@
   "name": "v1",
   "version": "1.0.0",
   "engines": {
-    "node": "6.11.1"
+    "node": "12.16.1"
   },
   "description": "YelpCamp v1",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "compile:sass": "node-sass public/sass/custom.scss public/css/styles.css -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

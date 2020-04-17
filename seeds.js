@@ -14,14 +14,20 @@ async function seedDB() {
   async function deleteEverything(callback) {
     await Campground.deleteMany({}, () => {
       console.log("Removed Campgrounds!");
+    }).catch((err) => {
+      console.log("ERROR DELETING CAMPGROUNDS:",err);
     });
 
     await Comment.deleteMany({}, () => {
       console.log("Removed Comments!");
+    }).catch((err) => {
+      console.log("ERROR DELETING COMMENTS:",err);
     });
 
     await User.deleteMany({}, () => {
       console.log("Removed Users!");
+    }).catch((err) => {
+      console.log("ERROR DELETING USERS:",err);
     });
     callback();
   }
