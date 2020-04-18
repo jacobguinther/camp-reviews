@@ -2,6 +2,7 @@ const express = require("express"),
   router = express.Router({ mergeParams: true }),
   Campground = require("../models/campground"),
   Comment = require("../models/comment"),
+  Rating = require("../models/rating"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserComment, isAdmin } = middleware;
 
@@ -23,7 +24,9 @@ router.post("/", isLoggedIn, (req, res) => {
       console.log(err);
       res.redirect("/campgrounds");
     } else {
-      Comment.create(req.body.comment, (err, comment) => {
+      const {comment, rating} = req.body;
+      console.log(rating)
+      Comment.create(comment, (err, comment) => {
         if (err) {
           console.log(err);
         } else {
@@ -37,6 +40,7 @@ router.post("/", isLoggedIn, (req, res) => {
           res.redirect("/campgrounds/id-" + campground._id);
         }
       });
+      // Rating.create()
     }
   });
 });

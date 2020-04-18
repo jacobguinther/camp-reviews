@@ -132,14 +132,14 @@ const users = [
     isAdmin: false,
   },
   {
-    username: "jgguinther",
-    email: "jgguinther09@gmail.com",
+    username: "conahemo",
+    email: "conahemo@gmail.com",
     password: "password",
     isAdmin: false,
   },
   {
-    username: "toridillon",
-    email: "toridillon@yahoo.com",
+    username: "vispicar",
+    email: "vispicar@yahoo.com",
     password: "password",
     isAdmin: true,
   },
