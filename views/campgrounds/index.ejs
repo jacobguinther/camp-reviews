@@ -10,8 +10,8 @@
         <form action="/campgrounds/page-1" method="GET" class="" id="campground-search">
             <div class="form-row">
                 <div class="col-md-4 p-0">
-                    <input type="text" id="search" name="search" placeholder="Campground search..." class="btn-shadow form-control"
-                        value="<%= searchQueryValue %>">
+                    <input type="text" id="search" name="search" placeholder="Campground search..."
+                        class="btn-shadow form-control" value="<%= searchQueryValue %>">
                 </div>
                 <div class="col p-0 ml-2">
                     <button class="btn btn-primary btn-shadow" type="submit">Search</button>
@@ -41,15 +41,51 @@
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
             </a>
             <div class="card-body d-flex flex-column">
-                <h4 class="card-title"><%= campground.name %></h4>
+                <h4 class="card-title">
+                    <%= campground.name %>
+                </h4>
                 <%- include('../functions') %>
-                <p class="card-text"><%= text_truncate(campground.description,100 ,"...") %></p>
-                <a href="/campgrounds/id-<%= campground._id %>" class="btn btn-primary mt-auto">More Info</a>
+                <p class="card-text">
+                    <%= text_truncate(campground.description,100 ,"...") %>
+                </p>
+                <a href="/campgrounds/id-<%= campground._id %>" class="btn btn-primary mt-auto">
+                    More Info
+                </a>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                <small class="text-muted"><%= campground.author.username %></small>
-                <small class="text-muted"><%=
-                    moment(campground.createdAt).fromNow() %></small>
+                <!-- <small class="text-muted">
+                    <%= campground.author.username %>
+                </small> -->
+                <small class="text-muted">
+                    <% if(true){ %>
+                    <% const rating = 4.5 %>
+                    <% if(rating % 1 !== 0){ %>
+                    <% const yellowStars = (Math.round(rating) - 1) %>
+                    <% const greyStars = (5 - Math.round(rating)) %>
+                    <% for(let i = 0; i < yellowStars; i++){ %>
+                    <img class="star star-small" src="/star-yellow-sketch.svg">
+                    <% } %>
+                    <img class="star star-small" src="/star-multipath.svg">
+                    <% for(let i = 0; i < greyStars; i++){ %>
+                    <img class="star star-small" src="/star-gray-sketch.svg">
+                    <% } %>
+                    <% }else{ %>
+                    <% const yellowStars = rating %>
+                    <% const greyStars = 5 - rating %>
+                    <% for(let i = 0; i < yellowStars; i++){ %>
+                    <img class="star star-small" src="/star-yellow-sketch.svg">
+                    <% } %>
+                    <% for(let i = 0; i < greyStars; i++){ %>
+                    <img class="star star-small" src="/star-gray-sketch.svg">
+                    <% } %>
+                    <% } %>
+                    <% }else{ %>
+                    <p>nope</p>
+                    <% } %>
+                </small>
+                <small class="text-muted">
+                    <%= moment(campground.createdAt).fromNow() %>
+                </small>
             </div>
         </div>
     </div>

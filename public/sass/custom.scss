@@ -70,6 +70,21 @@ body {
   // box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(255, 255, 255, 0.25); /* pink, 25% opacity */
 }
 
+.stars-list {
+  position: relative;
+}
+.star {
+  margin-left: 2px;
+}
+.star-large{
+  height: 1.2rem;
+  width: 1.2rem;
+}
+.star-small{
+  height: .8rem;
+  width: .8rem;
+}
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 // /* Sticky footer styles

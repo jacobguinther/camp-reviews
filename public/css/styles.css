@@ -39,6 +39,20 @@ body {
 
 /* active state i.e. displayed while the mouse is being pressed down */
 /* the shadow; displayed while the element is in focus */
+.stars-list {
+  position: relative; }
+
+.star {
+  margin-left: 2px; }
+
+.star-large {
+  height: 1.2rem;
+  width: 1.2rem; }
+
+.star-small {
+  height: .8rem;
+  width: .8rem; }
+
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
