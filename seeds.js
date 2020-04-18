@@ -47,11 +47,11 @@ async function seedDB() {
             function checkAllUsers() {
               let count = 0;
               if (count === 500) return;
-              if (userArr.length !== 2) {
+              if (userArr.length !== users.length) {
                 setTimeout(checkAllUsers, 100);
               } else {
                 if (
-                  userArr.length === 2 &&
+                  userArr.length === users.length &&
                   user.username === users[users.length - 1].username
                 ) {
                   console.log("userArr: ", userArr.length);
@@ -113,6 +113,24 @@ const randomIndex = (arr) => {
 };
 
 const users = [
+  {
+    username: "rousteri",
+    email: "rousteri@yahoo.com",
+    password: "password",
+    isAdmin: false,
+  },
+  {
+    username: "ernablay",
+    email: "ernablay@yahoo.com",
+    password: "password",
+    isAdmin: false,
+  },
+  {
+    username: "termania",
+    email: "termania@yahoo.com",
+    password: "password",
+    isAdmin: false,
+  },
   {
     username: "jgguinther",
     email: "jgguinther09@gmail.com",
