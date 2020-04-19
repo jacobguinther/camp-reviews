@@ -24,24 +24,29 @@ router.post("/", isLoggedIn, (req, res) => {
       console.log(err);
       res.redirect("/campgrounds");
     } else {
-      const {comment, rating} = req.body;
-      console.log(rating)
-      Comment.create(comment, (err, comment) => {
-        if (err) {
-          console.log(err);
-        } else {
-          const { _id: id, username } = req.user;
-          comment.author.id = id;
-          comment.author.username = username;
-          comment.save();
-          campground.comments.push(comment);
-          campground.save();
-          req.flash("success", "Created a comment!");
-          res.redirect("/campgrounds/id-" + campground._id);
-        }
+      const { comment, rating } = req.body;
+      const { _id: id, username } = req.user;
+
+      const COMMENT = Comment.create(comment);
+      const RATING = Rating.create(rating);
+      const promiseArr = [COMMENT, RATING];
+      Promise.all(promiseArr).then((values) => {
+        let comment = values[0];
+        let rating = values[1];
+        comment.author.id = id;
+        comment.author.username = username;
+        comment.save();
+        campground.comments.push(comment);
+        rating.author.id = id;
+        rating.author.username = username;
+        rating.save();
+        campground.ratings.push(rating);
+        campground.save();
+        req.flash("success", "Created a comment!");
+        res.redirect("/campgrounds/id-" + campground._id);
       });
-      // Rating.create()
     }
+
   });
 });
 
