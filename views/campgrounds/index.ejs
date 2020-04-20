@@ -57,9 +57,15 @@
                     <%= campground.author.username %>
                 </small> -->
                 <small class="text-muted">
+                    <% if (campground.reviews.length) { %>
                     <span>
-                        <% if(true){ %>
-                        <% const rating = 4.5 %>
+                        <% let total = 0 %>
+                        <% for(let i = 0; i < campground.reviews.length; i++){ %>
+                        <% total += campground.reviews[i].rating; %>
+                        <% } %>
+                        <% const campgroundRating = total / campground.reviews.length; %>
+
+                        <% const rating = campgroundRating %>
                         <% if(rating % 1 !== 0){ %>
                         <% const yellowStars = (Math.round(rating) - 1) %>
                         <% const greyStars = (5 - Math.round(rating)) %>
@@ -80,11 +86,12 @@
                         <img class="star star-small" src="/star-gray-sketch.svg">
                         <% } %>
                         <% } %>
-                        <% }else{ %>
-                        <p>nope</p>
-                        <% } %>
                     </span>
-                    <span class="pl-1">4 ratings</span>
+                    <span class="pl-1"><%= campground.reviews.length %> reviews</span>
+                    <% } else { %>
+                        <span class="pl-1">No Reviews</span>
+                    <% } %>
+
                 </small>
                 <small class="text-muted">
                     <%= moment(campground.createdAt).fromNow() %>

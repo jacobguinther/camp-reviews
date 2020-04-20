@@ -1,12 +1,12 @@
 const express = require("express"),
   router = express.Router(),
   Campground = require("../models/campground"),
-  Comment = require("../models/comment"),
+  // Comment = require("../models/comment"),
+  Review = require("../models/review"),
   middleware = require("../middleware"),
   {
     isLoggedIn,
     checkUserCampground,
-    checkUserComment,
     isAdmin,
     isSafe,
   } = middleware;
@@ -18,7 +18,7 @@ function escapeRegex(text) {
 
 // CAMPGROUND INDEX ROOT
 router.get("/", (req, res) => {
-  console.log("/ ROOT HIT");
+  // console.log("/ ROOT HIT");
   res.redirect("campgrounds/page-1");
 });
 
@@ -53,6 +53,7 @@ router.get("/page-:page", (req, res) => {
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
+    .populate("reviews")
     .exec((err, campgrounds) => {
       Campground.countDocuments(dbquery).exec((err, count) => {
         const totalPages = Math.ceil(count / perPage) || 1;
@@ -139,12 +140,14 @@ router.put("/:id", (req, res) => {
   );
 });
 
+
 // DELETE CAMPGROUND
 router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
-  Comment.remove(
+  console.log("req.campground.reviews",req.campground.reviews)
+  Review.deleteMany(
     {
       _id: {
-        $in: req.campground.comments,
+        $in: req.campground.reviews,
       },
     },
     (err) => {
@@ -152,7 +155,7 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
         req.flash("error", err.message);
         res.redirect("/");
       } else {
-        req.campground.remove((err) => {
+        req.campground.deleteOne((err) => {
           if (err) {
             req.flash("error", err.message);
             return res.redirect("/");
@@ -168,7 +171,7 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
 // SHOW CAMPGROUND
 router.get("/id-:id", (req, res) => {
   Campground.findById(req.params.id)
-    .populate("comments")
+    .populate("reviews")
     .exec((err, foundCampground) => {
       if (err || !foundCampground) {
         console.log(err);

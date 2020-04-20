@@ -1,6 +1,7 @@
 // const mongoose = require("mongoose");
 const Campground = require("./models/campground");
-const Comment = require("./models/comment");
+// const Comment = require("./models/review");
+const Review = require("./models/review");
 const User = require("./models/user");
 const moment = require("moment");
 const faker = require("faker");
@@ -18,10 +19,10 @@ async function seedDB() {
       console.log("ERROR DELETING CAMPGROUNDS:",err);
     });
 
-    await Comment.deleteMany({}, () => {
-      console.log("Removed Comments!");
+    await Review.deleteMany({}, () => {
+      console.log("Removed Reviews!");
     }).catch((err) => {
-      console.log("ERROR DELETING COMMENTS:",err);
+      console.log("ERROR DELETING REVIEWS:",err);
     });
 
     await User.deleteMany({}, () => {
@@ -64,19 +65,22 @@ async function seedDB() {
                     } else {
                       randomCampground = campgrounds[i % campgrounds.length];
                     }
+
                     // randomCampground = randomIndex(campgrounds);
-                    let commentsArr = [];
+                    let reviewsArr = [];
                     let randomUser = {};
 
-                    comments.forEach((comment) => {
+
+                    reviews.forEach((review) => {
                       randomUser = randomIndex(userArr);
-                      comment.author.id = randomUser.id;
-                      comment.author.username = randomUser.username;
-                      commentsArr.push(comment);
+                      review.author.id = randomUser.id;
+                      review.author.username = randomUser.username;
+                      review.rating = Math.round(Math.random() * (5 - 3) + 3);
+                      reviewsArr.push(review);
                     });
 
-                    Comment.create(commentsArr, async (err, allComments) => {
-                      randomCampground.comments = allComments;
+                    Review.create(reviewsArr, async (err, allReviews) => {
+                      randomCampground.reviews = allReviews;
                       randomCampground.author.id = randomUser.id;
                       randomCampground.author.username = randomUser.username;
                       await Campground.create(randomCampground);
@@ -289,7 +293,7 @@ const campgrounds = [
   },
 ];
 
-const comments = [
+const reviews = [
   {
     text: "I caught a fish!",
     author: {
