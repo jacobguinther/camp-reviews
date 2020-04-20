@@ -34,9 +34,9 @@
         <% } %>
         <% } %>
         <% }else { %>
-          <li class="list-group-item">Rating:
-            <span class="text-muted">No Reviews</span>
-          </li>
+      <li class="list-group-item">Rating:
+        <span class="text-muted">No Reviews</span>
+      </li>
       <% } %>
 
       </li>
@@ -152,12 +152,20 @@
           <% }) %>
         </ul>
       </div>
+
+      <% console.log("userReviewed:", userReviewed) %>
+      <% userReviewed ? console.log("User Already Reviewed") : console.log("User has NOT reviewed") %>
+
+      <% if(!userReviewed){ %>
       <hr class="m-0">
       </hr>
       <div class="card-body d-flex">
-        <a class="btn btn-sm btn-primary" role="button" href="/campgrounds/<%= campground._id %>/comments/new">Add New
-          Review</a>
+        <a class="btn btn-sm btn-primary" role="button" href="/campgrounds/<%= campground._id %>/comments/new">
+          Add New Review
+        </a>
       </div>
+      <% } %>
+
     </div>
   </div>
 

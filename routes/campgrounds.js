@@ -4,12 +4,7 @@ const express = require("express"),
   // Comment = require("../models/comment"),
   Review = require("../models/review"),
   middleware = require("../middleware"),
-  {
-    isLoggedIn,
-    checkUserCampground,
-    isAdmin,
-    isSafe,
-  } = middleware;
+  { isLoggedIn, checkUserCampground, isAdmin, isSafe } = middleware;
 
 // Define escapeRegex function for search feature
 function escapeRegex(text) {
@@ -37,15 +32,15 @@ router.get("/page-:page", (req, res) => {
   const searchCategory = category === "author" ? "author.username" : category;
   let dbquery;
   if (Object.keys(req.query).length) {
-    if(req.query.search.length === 0){
+    if (req.query.search.length === 0) {
       dbquery = {};
       console.log("no length");
       res.redirect("/campgrounds/page-1");
       return;
-    }else{
+    } else {
       dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
     }
-  } 
+  }
   Campground.find(dbquery, (err) => {
     if (err) {
       console.log(err);
@@ -140,10 +135,9 @@ router.put("/:id", (req, res) => {
   );
 });
 
-
 // DELETE CAMPGROUND
 router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
-  console.log("req.campground.reviews",req.campground.reviews)
+  console.log("req.campground.reviews", req.campground.reviews);
   Review.deleteMany(
     {
       _id: {
@@ -172,12 +166,22 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
 router.get("/id-:id", (req, res) => {
   Campground.findById(req.params.id)
     .populate("reviews")
-    .exec((err, foundCampground) => {
-      if (err || !foundCampground) {
+    .exec((err, campground) => {
+      if (err || !campground) {
         console.log(err);
         return res.redirect("/campgrounds");
       }
-      res.render("campgrounds/show", { campground: foundCampground });
+      let userReviewed = false;
+      if (req.user !== undefined) {
+        for (let i = 0; i < campground.reviews.length; i++) {
+            if(campground.reviews[i].author.id.toString() === req.user._id.toString()){
+            userReviewed = true;
+          }
+        }
+        res.render("campgrounds/show", { campground, userReviewed });
+      } else {
+        res.render("campgrounds/show", { campground, userReviewed });
+      }
     });
 });
 
