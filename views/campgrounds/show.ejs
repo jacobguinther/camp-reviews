@@ -133,7 +133,7 @@
 
           <div class="d-flex justify-content-between">
             <div class="mb-2">
-              <%= review.text %> <% if(currentUser &&
+              <%= review.comment %> <% if(currentUser &&
                   review.author.id.equals(currentUser._id) || currentUser &&
                   currentUser.isAdmin){ %>
               <div class="pull-right">

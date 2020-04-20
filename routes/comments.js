@@ -20,9 +20,7 @@ router.post("/", isLoggedIn, (req, res) => {
   console.log("CREATE COMMENT ROUTE HIT");
   const { comment, rating } = req.body;
   const { _id: id, username } = req.user;
-  let review = {};
-  review.rating = rating;
-  review.text = comment; // change text to comment to do so i can do object inline
+  let review = {comment, rating};
   const CAMPGROUND = Campground.findById(req.params.id);
   const REVIEW = Review.create(review);
   const promiseArr = [CAMPGROUND, REVIEW];
@@ -56,10 +54,8 @@ router.get("/:reviewId/edit", isLoggedIn, checkUserReview, (req, res) => {
 // UPDATE COMMENT
 router.put("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
   console.log("UPDATE COMMENT ROUTE HIT");
-  let review = {};
   const { comment, rating } = req.body;
-  review.rating = rating;
-  review.text = comment;
+  let review = {comment, rating};
   const REVIEW = Review.findByIdAndUpdate(req.params.reviewId, review);
   REVIEW.then(() => {
     res.redirect("/campgrounds/id-" + req.params.id);

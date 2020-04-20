@@ -295,35 +295,35 @@ const campgrounds = [
 
 const reviews = [
   {
-    text: "I caught a fish!",
+    comment: "I caught a fish!",
     author: {
       id: "",
       username: "",
     },
   },
   {
-    text: "This place is great but I wish there was internet",
+    comment: "This place is great but I wish there was internet",
     author: {
       id: "",
       username: "",
     },
   },
   {
-    text: "Mushrooms Everywhere!",
+    comment: "Mushrooms Everywhere!",
     author: {
       id: "",
       username: "",
     },
   },
   {
-    text: "Too many bugs",
+    comment: "Too many bugs",
     author: {
       id: "",
       username: "",
     },
   },
   {
-    text: "Its pet friendly",
+    comment: "Its pet friendly",
     author: {
       id: "",
       username: "",
