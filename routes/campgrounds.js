@@ -29,7 +29,7 @@ router.get("/page-:page", (req, res) => {
   const categoryQuery = Object.keys(req.query)[1];
 
   const searchTerm = search || "";
-  const searchCategory = category === "author" ? "author.username" : category;
+  const searchCategory = category === "author" ? "author.username" : "name";
   let dbquery;
   if (Object.keys(req.query).length) {
     if (req.query.search.length === 0) {

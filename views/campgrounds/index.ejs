@@ -17,7 +17,7 @@
                     <button class="btn btn-primary btn-shadow" type="submit">Search</button>
                 </div>
             </div>
-            <div class="form-row mt-2">
+            <!-- <div class="form-row mt-2">
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="radioName" name="category" class="custom-control-input" value="name"
                         <%= (categoryQueryValue === undefined || "name") ? "checked" : "" %>>
@@ -28,7 +28,7 @@
                         <%= categoryQueryValue === ("author" || undefined) ? "checked" : "" %>>
                     <label class="custom-control-label text-white radio-text-shadow" for="radioAuthor">Author</label>
                 </div>
-            </div>
+            </div> -->
         </form>
     </div>
 </header>
@@ -89,6 +89,7 @@
                         <% } %>
                     </span>
                     <span class="pl-1"><%= campground.reviews.length %> reviews</span>
+
                     <% } else { %>
                     <span class="pl-1">No Reviews</span>
                     <% } %>
