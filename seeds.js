@@ -32,75 +32,53 @@ async function seedDB() {
     });
     callback();
   }
+
   async function addUsers() {
     let userArr = [];
-    users.forEach(async (user) => {
+    users.forEach((user) => {
       const { username, email, isAdmin } = user;
-      await User.register(
-        { username, email, isAdmin },
-        user.password,
-        async (err, user) => {
-          if (err) {
-            console.log(err);
-          } else {
-            userArr.push(user);
-            console.log(user.username);
-            function checkAllUsers() {
-              let count = 0;
-              if (count === 500) return;
-              if (userArr.length !== users.length) {
-                setTimeout(checkAllUsers, 100);
-              } else {
-                if (
-                  userArr.length === users.length &&
-                  user.username === users[users.length - 1].username
-                ) {
-                  console.log("userArr: ", userArr.length);
-                  for (let i = 0; i < numCampgrounds; i++) {
-                    if (i % campgrounds.length === 0) shuffle(campgrounds);
-                    let randomCampground = {};
-
-                    if (campgrounds[i]) {
-                      randomCampground = campgrounds[i];
-                    } else {
-                      randomCampground = campgrounds[i % campgrounds.length];
-                    }
-
-                    // randomCampground = randomIndex(campgrounds);
-                    let reviewsArr = [];
-                    let randomUser = {};
-
-
-                    reviews.forEach((review) => {
-                      randomUser = randomIndex(userArr);
-                      review.author.id = randomUser.id;
-                      review.author.username = randomUser.username;
-                      review.rating = Math.round(Math.random() * (5 - 3) + 3);
-                      reviewsArr.push(review);
-                    });
-
-                    Review.create(reviewsArr, async (err, allReviews) => {
-                      randomCampground.reviews = allReviews;
-                      randomCampground.author.id = randomUser.id;
-                      randomCampground.author.username = randomUser.username;
-                      await Campground.create(randomCampground);
-                    });
-                  }
-
-                  console.log(`Added ${numCampgrounds} Campgrounds`);
-                }
-              }
-              count += 100;
-            }
-            checkAllUsers();
-          }
-        }
-      );
+      const USER = User.register({ username, email, isAdmin }, user.password);
+      userArr.push(USER);
     });
-    console.log(`Added ${users.length} Users`);
+    Promise.all(userArr)
+      .then(() => {
+        for (let i = 0; i < numCampgrounds; i++) {
+          if (i % campgrounds.length === 0) shuffle(campgrounds);
+          let randomCampground = {};
+
+          if (campgrounds[i]) {
+            randomCampground = campgrounds[i];
+          } else {
+            randomCampground = campgrounds[i % campgrounds.length];
+          }
+
+          let reviewsArr = [];
+          let randomUser = {};
+
+          let randomNumberOfReviews = Math.round(Math.random() * (10 - 2) + 2)
+          shuffle(users);
+          shuffle(reviews)
+          for(let i = 0; i < randomNumberOfReviews; i++){
+            let review = reviews[i];
+            review.author.id = users[i].id;
+            review.author.username = users[i].username;
+            review.rating = Math.round(Math.random() * (5 - 3) + 3);
+            reviewsArr.push(review);
+          }
+
+          Review.create(reviewsArr, async (err, allReviews) => {
+            randomCampground.reviews = allReviews;
+            randomCampground.author.id = randomUser.id;
+            randomCampground.author.username = randomUser.username;
+            await Campground.create(randomCampground);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   await deleteEverything(addUsers);
-  // await deleteEverything(()=>{console.log("done")});
 }
 
 const shuffle = (array) => {
@@ -142,8 +120,38 @@ const users = [
     isAdmin: false,
   },
   {
-    username: "vispicar",
-    email: "vispicar@yahoo.com",
+    username: "lOViONIC",
+    email: "lOViONIC@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
+  {
+    username: "spaTENAt",
+    email: "spaTENAt@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
+  {
+    username: "caTiMAHe",
+    email: "caTiMAHe@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
+  {
+    username: "auLcOuST",
+    email: "auLcOuST@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
+  {
+    username: "RosorNic",
+    email: "RosorNic@yahoo.com",
+    password: "password",
+    isAdmin: true,
+  },
+  {
+    username: "IoNVestA",
+    email: "IoNVestA@yahoo.com",
     password: "password",
     isAdmin: true,
   },
@@ -324,6 +332,41 @@ const reviews = [
   },
   {
     comment: "Its pet friendly",
+    author: {
+      id: "",
+      username: "",
+    },
+  },
+  {
+    comment: "Beware of hippies.",
+    author: {
+      id: "",
+      username: "",
+    },
+  },
+  {
+    comment: "Nobody to help me set up my tent.",
+    author: {
+      id: "",
+      username: "",
+    },
+  },
+  {
+    comment: "I would go here again",
+    author: {
+      id: "",
+      username: "",
+    },
+  },
+  {
+    comment: "This place is paradise",
+    author: {
+      id: "",
+      username: "",
+    },
+  },
+  {
+    comment: "Here is my review",
     author: {
       id: "",
       username: "",
