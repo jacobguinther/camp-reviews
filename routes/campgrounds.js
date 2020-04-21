@@ -174,9 +174,13 @@ router.get("/id-:id", (req, res) => {
       let userReviewed = false;
       if (req.user !== undefined) {
         for (let i = 0; i < campground.reviews.length; i++) {
-            if(campground.reviews[i].author.id.toString() === req.user._id.toString()){
-            userReviewed = true;
-          }
+          //   if(campground.reviews[i].author.id.toString() === req.user._id.toString()){
+          //   userReviewed = true;
+          // }
+          // console.log(campground.reviews[i].author.id.toString())
+          // console.log(req.user._id.toString())
+          console.log(campground.reviews[i].author.id)
+          console.log(req.user._id)
         }
         res.render("campgrounds/show", { campground, userReviewed });
       } else {
