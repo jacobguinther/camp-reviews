@@ -24,23 +24,19 @@
         <ul class="navbar-nav">
           <% if(!currentUser){ %>
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" href="/login">Log In</a>
           </li>
-          <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">
-            <a class="nav-link" href="/register">Register</a>
+          <li class="nav-item <%= typeof page !== 'undefined' && page === 'signup' ? 'active' : '' %>">
+            <a class="nav-link" href="/signup">Sign Up</a>
           </li>
           <% } else { %>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1"
-              aria-disabled="true"><%= currentUser.username %></a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profile
+              <%= currentUser.username %>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dark bg-primary" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">My Profile</a>
+              <a class="dropdown-item" href="#">Profile</a>
               <a class="dropdown-item" href="/campgrounds/new">Add Campground</a>
               <!-- <div class="dropdown-divider"></div> -->
               <hr class="m-0"></hr>

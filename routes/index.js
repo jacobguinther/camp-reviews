@@ -8,13 +8,13 @@ router.get("/", (req, res) => {
   res.render("landing");
 });
 
-// REGISTER USER PAGE
-router.get("/register", (req, res) => {
-  res.render("register", { page: "register" });
+// signup USER PAGE
+router.get("/signup", (req, res) => {
+  res.render("signup", { page: "signup" });
 });
 
-// REGISTER USER
-router.post("/register", (req, res) => {
+// signup USER
+router.post("/signup", (req, res) => {
   const { username, email } = req.body;
   const newUser = new User({ username: username, email: email });
   // if(req.body.adminCode === process.env.ADMIN_CODE) {
@@ -24,7 +24,7 @@ router.post("/register", (req, res) => {
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
       console.log(err);
-      return res.render("register", { error: err.message });
+      return res.render("signup", { error: err.message });
     }
     passport.authenticate("local")(req, res, () => {
       req.flash(
