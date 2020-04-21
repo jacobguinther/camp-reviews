@@ -2,7 +2,7 @@
 <%- include('../functions') %>
 
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-3 show-remove-list">
     <div class="list-group">
       <li class="list-group-item">Posted By: <span class="text-muted"><%= campground.author.username %></span> </li>
       <% if (campground.reviews.length) { %>
@@ -46,7 +46,7 @@
     </div>
     <div id="map"></div>
   </div>
-  <div class="col-md-9">
+  <div class="col-lg-9">
     <div class="card mb-3">
       <div class="thumbnail">
         <img class="img-fluid" src="<%= campground.image %>" class="card-img-top" alt="...">

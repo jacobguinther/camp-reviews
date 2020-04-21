@@ -9,7 +9,7 @@ const faker = require("faker");
 async function seedDB() {
   const numCampgrounds = 30;
   console.clear();
-  // console.log("name", faker.hacker.adjective(), faker.hacker.noun());
+  // console.log("name", faker.address.city(), faker.address.state());
   console.log(moment().format("MMMM Do YYYY, h:mm a"));
   // Delete Everything In Database
   async function deleteEverything(callback) {
@@ -59,6 +59,8 @@ async function seedDB() {
           shuffle(users);
           shuffle(reviews)
           for(let i = 0; i < randomNumberOfReviews; i++){
+            randomCampground.author.id = users[i].id;
+            randomCampground.author.username = users[i].username;
             let review = reviews[i];
             review.author.id = users[i].id;
             review.author.username = users[i].username;
@@ -67,9 +69,8 @@ async function seedDB() {
           }
 
           Review.create(reviewsArr, async (err, allReviews) => {
+            randomCampground.location = `${faker.address.city()}, ${faker.address.state()}`;
             randomCampground.reviews = allReviews;
-            randomCampground.author.id = randomUser.id;
-            randomCampground.author.username = randomUser.username;
             await Campground.create(randomCampground);
           });
         }
@@ -345,7 +346,7 @@ const reviews = [
     },
   },
   {
-    comment: "Nobody to help me set up my tent.",
+    comment: "Nobody helped me set up my tent.",
     author: {
       id: "",
       username: "",
