@@ -22,7 +22,7 @@ mongoose.Promise = global.Promise;
 const databaseUri = `${process.env.MONGODB_URI}` || "mongodb://localhost/yelp_camp";
 
 mongoose
-  .connect(databaseUri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(databaseUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => console.log(`Database connected: ${databaseUri}`))
   .catch((err) => console.log(`Database connection error: ${err.message}`));
 

@@ -39,7 +39,7 @@ router.post("/register", (req, res) => {
 // LOGIN USER PAGE
 router.get("/login", (req, res) => {
   res.render("login", { page: "login" });
-  console.log(req.header('Referer'))
+  // console.log(req.header('Referer'))
 });
 
 // LOGIN USER

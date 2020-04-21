@@ -1,15 +1,10 @@
 const express = require("express"),
   router = express.Router(),
   Campground = require("../models/campground"),
-  Comment = require("../models/comment"),
+  // Comment = require("../models/comment"),
+  Review = require("../models/review"),
   middleware = require("../middleware"),
-  {
-    isLoggedIn,
-    checkUserCampground,
-    checkUserComment,
-    isAdmin,
-    isSafe,
-  } = middleware;
+  { isLoggedIn, checkUserCampground, isAdmin, isSafe } = middleware;
 
 // Define escapeRegex function for search feature
 function escapeRegex(text) {
@@ -18,7 +13,7 @@ function escapeRegex(text) {
 
 // CAMPGROUND INDEX ROOT
 router.get("/", (req, res) => {
-  console.log("/ ROOT HIT");
+  // console.log("/ ROOT HIT");
   res.redirect("campgrounds/page-1");
 });
 
@@ -34,18 +29,18 @@ router.get("/page-:page", (req, res) => {
   const categoryQuery = Object.keys(req.query)[1];
 
   const searchTerm = search || "";
-  const searchCategory = category === "author" ? "author.username" : category;
+  const searchCategory = category === "author" ? "author.username" : "name";
   let dbquery;
   if (Object.keys(req.query).length) {
-    if(req.query.search.length === 0){
+    if (req.query.search.length === 0) {
       dbquery = {};
       console.log("no length");
       res.redirect("/campgrounds/page-1");
       return;
-    }else{
+    } else {
       dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
     }
-  } 
+  }
   Campground.find(dbquery, (err) => {
     if (err) {
       console.log(err);
@@ -53,6 +48,7 @@ router.get("/page-:page", (req, res) => {
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
+    .populate("reviews")
     .exec((err, campgrounds) => {
       Campground.countDocuments(dbquery).exec((err, count) => {
         const totalPages = Math.ceil(count / perPage) || 1;
@@ -141,10 +137,11 @@ router.put("/:id", (req, res) => {
 
 // DELETE CAMPGROUND
 router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
-  Comment.remove(
+  console.log("req.campground.reviews", req.campground.reviews);
+  Review.deleteMany(
     {
       _id: {
-        $in: req.campground.comments,
+        $in: req.campground.reviews,
       },
     },
     (err) => {
@@ -152,7 +149,7 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
         req.flash("error", err.message);
         res.redirect("/");
       } else {
-        req.campground.remove((err) => {
+        req.campground.deleteOne((err) => {
           if (err) {
             req.flash("error", err.message);
             return res.redirect("/");
@@ -168,13 +165,23 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
 // SHOW CAMPGROUND
 router.get("/id-:id", (req, res) => {
   Campground.findById(req.params.id)
-    .populate("comments")
-    .exec((err, foundCampground) => {
-      if (err || !foundCampground) {
+    .populate("reviews")
+    .exec((err, campground) => {
+      if (err || !campground) {
         console.log(err);
         return res.redirect("/campgrounds");
       }
-      res.render("campgrounds/show", { campground: foundCampground });
+      let userReviewed = false;
+      if (req.user !== undefined) {
+        for (let i = 0; i < campground.reviews.length; i++) {
+            if(campground.reviews[i].author.id.toString() === req.user._id.toString()){
+            userReviewed = true;
+          }
+        }
+        res.render("campgrounds/show", { campground, userReviewed });
+      } else {
+        res.render("campgrounds/show", { campground, userReviewed });
+      }
     });
 });
 

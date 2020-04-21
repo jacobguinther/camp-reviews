@@ -1,5 +1,6 @@
-const Comment = require("../models/comment");
+const Review = require("../models/review");
 const Campground = require("../models/campground");
+
 module.exports = {
   isLoggedIn: (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -9,6 +10,7 @@ module.exports = {
     req.flash("error", "You must be signed in to do that!");
     res.redirect("/login");
   },
+
   checkUserCampground: (req, res, next) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
       if (err || !foundCampground) {
@@ -27,17 +29,19 @@ module.exports = {
       }
     });
   },
-  checkUserComment: (req, res, next) => {
-    Comment.findById(req.params.commentId, (err, foundComment) => {
-      if (err || !foundComment) {
-        console.log(err);
-        req.flash("error", "Sorry, that comment does not exist!");
+
+  checkUserReview: (req, res, next) => {
+    const reviewId = req.params.reviewId;
+    Review.findById(reviewId, (err, foundReview) => {
+      if (err || !foundReview) {
+        console.log("ERROR FINDING REVIEW:", err);
+        req.flash("error", "Sorry, that review does not exist!");
         res.redirect("/campgrounds");
       } else if (
-        foundComment.author.id.equals(req.user._id) ||
+        foundReview.author.id.equals(req.user._id) ||
         req.user.isAdmin
       ) {
-        req.comment = foundComment;
+        req.comment = foundReview;
         next();
       } else {
         req.flash("error", "You don't have permission to do that!");
@@ -45,6 +49,7 @@ module.exports = {
       }
     });
   },
+
   isAdmin: (req, res, next) => {
     if (req.user.isAdmin) {
       next();
@@ -53,6 +58,7 @@ module.exports = {
       res.redirect("back");
     }
   },
+
   isSafe: (req, res, next) => {
     if (req.body.image.match(/^https:\/\/images\.unsplash\.com\/.*/)) {
       next();
