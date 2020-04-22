@@ -127,8 +127,8 @@ const users = [
     isAdmin: true,
   },
   {
-    username: "spaTENAt",
-    email: "spaTENAt@yahoo.com",
+    username: "vispicar",
+    email: "vispicar@yahoo.com",
     password: "password",
     isAdmin: true,
   },
