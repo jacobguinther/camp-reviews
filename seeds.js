@@ -41,7 +41,7 @@ async function seedDB() {
       userArr.push(USER);
     });
     Promise.all(userArr)
-      .then(() => {
+      .then((resolvedUsersArr) => {
         for (let i = 0; i < numCampgrounds; i++) {
           if (i % campgrounds.length === 0) shuffle(campgrounds);
           let randomCampground = {};
@@ -56,14 +56,14 @@ async function seedDB() {
           let randomUser = {};
 
           let randomNumberOfReviews = Math.round(Math.random() * (10 - 2) + 2)
-          shuffle(users);
+          shuffle(resolvedUsersArr);
           shuffle(reviews)
           for(let i = 0; i < randomNumberOfReviews; i++){
-            randomCampground.author.id = users[i].id;
-            randomCampground.author.username = users[i].username;
+            randomCampground.author.id = resolvedUsersArr[i].id;
+            randomCampground.author.username = resolvedUsersArr[i].username;
             let review = reviews[i];
-            review.author.id = users[i].id;
-            review.author.username = users[i].username;
+            review.author.id = resolvedUsersArr[i].id;
+            review.author.username = resolvedUsersArr[i].username;
             review.rating = Math.round(Math.random() * (5 - 3) + 3);
             reviewsArr.push(review);
           }
@@ -127,8 +127,8 @@ const users = [
     isAdmin: true,
   },
   {
-    username: "spaTENAt",
-    email: "spaTENAt@yahoo.com",
+    username: "vispicar",
+    email: "vispicar@yahoo.com",
     password: "password",
     isAdmin: true,
   },

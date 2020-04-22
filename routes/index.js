@@ -8,13 +8,13 @@ router.get("/", (req, res) => {
   res.render("landing");
 });
 
-// REGISTER USER PAGE
-router.get("/register", (req, res) => {
-  res.render("register", { page: "register" });
+// SIGNUP USER PAGE
+router.get("/signup", (req, res) => {
+  res.render("signup", { page: "signup" });
 });
 
-// REGISTER USER
-router.post("/register", (req, res) => {
+// SIGNUP USER
+router.post("/signup", (req, res) => {
   const { username, email } = req.body;
   const newUser = new User({ username: username, email: email });
   // if(req.body.adminCode === process.env.ADMIN_CODE) {
@@ -24,7 +24,7 @@ router.post("/register", (req, res) => {
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
       console.log(err);
-      return res.render("register", { error: err.message });
+      return res.render("signup", { error: err.message });
     }
     passport.authenticate("local")(req, res, () => {
       req.flash(
@@ -39,22 +39,21 @@ router.post("/register", (req, res) => {
 // LOGIN USER PAGE
 router.get("/login", (req, res) => {
   res.render("login", { page: "login" });
-  // console.log(req.header('Referer'))
 });
 
 // LOGIN USER
 router.post(
   "/login",
   passport.authenticate("local", {
-    // successRedirect: "/campgrounds",
+    successRedirect: "/campgrounds",
     failureRedirect: "/login",
     failureFlash: true,
     successFlash: "Welcome to YelpCamp!",
   }),
   (req, res) => {
-    let lastpage = req.session.returnTo
+    let lastpage = req.session.returnTo;
     req.session.returnTo = "";
-    res.redirect(lastpage || '/campgrounds')
+    res.redirect(lastpage || "/campgrounds");
   }
 );
 
@@ -62,6 +61,24 @@ router.post(
 router.get("/logout", (req, res) => {
   req.logout();
   req.flash("success", "See you later!");
+  res.redirect("/campgrounds");
+});
+
+// USER PAGE
+router.get("/profile", (req, res) => {
+  res.render("profile", { page: "profile", user: req.user });
+});
+
+// DELETE USER
+router.delete("/profile", (req, res) => {
+  console.log("Delete route hit");
+  User.deleteOne({ _id: req.user._id })
+    .then(() => {
+      res.redirect("/campgrounds");
+    })
+    .catch((err) => {
+      console.log("error");
+    });
   res.redirect("/campgrounds");
 });
 
