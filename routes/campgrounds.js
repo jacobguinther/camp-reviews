@@ -1,10 +1,21 @@
 const express = require("express"),
   router = express.Router(),
+
+ NodeGeocoder = require('node-geocoder');
+
   Campground = require("../models/campground"),
   // Comment = require("../models/comment"),
   Review = require("../models/review"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserCampground, isAdmin, isSafe } = middleware;
+
+  const options = {
+    provider: 'google',
+    // Optional depending on the providers
+    apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
+    formatter: null // 'gpx', 'string', ...
+  };
+  const geocoder = NodeGeocoder(options);
 
 // Define escapeRegex function for search feature
 function escapeRegex(text) {
@@ -72,15 +83,21 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // CREATE CAMPGROUND
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", isLoggedIn, async (req, res) => {
   const { name, image, description, location, cost } = req.body;
   const { _id: id, username } = req.user;
+  
+  const data = await geocoder.geocode(location);
+  let lat = undefined;
+  let lng = undefined;
+  if(data.length){
+     lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
+     lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
+  }
   const author = {
     id,
     username,
   };
-  const lat = 38.8098;
-  const lng = 82.2024;
   const newCampground = {
     name,
     image,
@@ -107,10 +124,16 @@ router.get("/:id/edit", isLoggedIn, checkUserCampground, (req, res) => {
 });
 
 // UPDATE CAMPGROUND
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   const { name, image, description, location, cost } = req.body;
-  const lat = 38.8098;
-  const lng = 82.2024;
+  const data = await geocoder.geocode(location);
+  let lat = undefined;
+  let lng = undefined;
+  if(data.length){
+     lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
+     lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
+  }
+
   const newData = {
     name,
     image,
