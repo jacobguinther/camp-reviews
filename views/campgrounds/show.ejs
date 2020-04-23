@@ -4,7 +4,12 @@
 <div class="row">
   <div class="col-md-3 show-remove-list">
     <div class="list-group">
-      <li class="list-group-item">Posted By: <span class="text-muted"><%= campground.author.username %></span> </li>
+      <li class="list-group-item">
+        Posted By:
+        <span class="text-muted">
+          <%= campground.author.username %>
+        </span>
+      </li>
       <% if (campground.reviews.length) { %>
       <% let total = 0 %>
       <% for(let i = 0; i < campground.reviews.length; i++){ %>
@@ -12,7 +17,7 @@
       <% } %>
       <% const campgroundRating = total / campground.reviews.length; %>
       <% const roundedRating = round_to_precision(campgroundRating, 0.5) %>
-      <li class="list-group-item">Rating: 
+      <li class="list-group-item">Rating:
         <!-- RENDER STAR -->
         <% if(roundedRating % 1 !== 0){ %>
         <% const yellowStars = (Math.floor(roundedRating)) %>
@@ -41,10 +46,15 @@
       <% } %>
 
       </li>
-      <li class="list-group-item">Map: </li>
-
+      <li class="list-group-item">
+        Map:
+        <% if (campground.lat && campground.lng) { %>
+        <div id="map"></div>
+        <% } else { %>
+        <span class="text-muted">Location Not Found</span>
+        <% } %>
+      </li>
     </div>
-    <div id="map"></div>
   </div>
   <div class="col-lg-9">
     <div class="card mb-3">
@@ -127,11 +137,7 @@
               <p>nope</p>
               <% } %>
             </p>
-
           </div>
-
-
-
           <div class="d-flex justify-content-between">
             <div class="mb-2">
               <%= review.comment %> <% if(currentUser &&
@@ -153,7 +159,6 @@
           <% }) %>
         </ul>
       </div>
-
       <% if(!userReviewed){ %>
       <hr class="m-0">
       </hr>
@@ -163,10 +168,24 @@
         </a>
       </div>
       <% } %>
-
     </div>
   </div>
-
 </div>
 
 <%- include('../partials/footer') %>
+<% if(campground.lat && campground.lng) { %>
+<script>
+  function initMap() {
+    // The location of Uluru
+    var uluru = { lat: <%= campground.lat %>, lng: <%= campground.lng %> };
+    // The map, centered at Uluru
+    var map = new google.maps.Map(
+      document.getElementById('map'), { zoom: 8, center: uluru, streetViewControl: false, fullscreenControl: false });
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({ position: uluru, map: map });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_API_KEY %>
+&callback=initMap">
+</script>
+<% } %>
