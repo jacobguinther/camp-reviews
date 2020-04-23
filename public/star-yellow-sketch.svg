@@ -1,0 +1,10 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <title>  star</title>
+    <desc>  Created with Sketch.</desc>
+    <g style="fill:#F5CB5C;stroke-linejoin:round">
+        <g style="stroke-width:0.8;stroke:grey">
+            <polygon points="10 0 13.1 6.3 20 7.3 15 12.1 16.2 19 10 15.8 3.8 19 5 12.1 0 7.3 6.9 6.3"/>
+        </g>
+    </g>
+</svg>

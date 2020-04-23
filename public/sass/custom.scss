@@ -1,73 +1,85 @@
-
-
 $theme-colors: (
   // "primary": gray,
-  "primary": #38475E,
-// "primary": ,
-// "secondary",
-// "success": ,
-// "info":    ,
-// "warning": ,
-  "danger": #ff4136,
-// "light":,,
-// "dark": ,
+    "primary": #38475e,
+  // "primary": ,
+    // "secondary",
+    // "success": ,
+    // "info":    ,
+    // "warning": ,
+    "danger": #ff4136,
+  // "light":,,
+    // "dark": ,
 );
 
 $spacer: 2rem;
-$component-active-bg: rgba(#343a40, .5);
-
+$component-active-bg: rgba(#343a40, 0.5);
 
 body {
   background-color: #fff !important;
 }
-  .alert p {
-    margin: 0;
-  }
-  .bg-cover {
-    background-attachment: static;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.alert p {
+  margin: 0;
+}
+.bg-cover {
+  background-attachment: static;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .jumbotron {
-  background-image: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%), url("https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80");
-
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    ),
+    url("https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80");
 }
-  .card-img-top {
-    height: 15em;
+.card-img-top {
+  height: 15em;
 }
 
 .custom-radio .custom-control-label::before {
   background-color: #fff;
   box-shadow: 0 0 5px #141609;
 }
-.btn-shadow{
-  box-shadow: 0 0 15px #66595A;
+.btn-shadow {
+  box-shadow: 0 0 15px #66595a;
 }
 .text-shadow {
-  text-shadow: 2px 2px 10px #66595A;
+  text-shadow: 2px 2px 10px #66595a;
 }
 .radio-text-shadow {
   text-shadow: 2px 2px 10px #141609;
 }
 
-/* This is the checked state */
-.custom-radio .custom-control-input:checked~.custom-control-label::before,
-.custom-radio .custom-control-input:checked~.custom-control-label::after {
-  background-color: #38475E;  
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before,
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+  background-color: #38475e;
   box-shadow: 0 0 10px #141609;
-  /* this bg image SVG is just a white circle, you can replace it with any valid SVG code */
   border-radius: 50%;
 }
 
-/* active state i.e. displayed while the mouse is being pressed down */
-.custom-radio .custom-control-input:active ~ .custom-control-label::before {
-  // color: #fff;
-  // background-color: #ff0000; /* red */
+.stars-list {
+  position: relative;
 }
-/* the shadow; displayed while the element is in focus */
-.custom-radio .custom-control-input:focus ~ .custom-control-label::before {
-  // box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(255, 255, 255, 0.25); /* pink, 25% opacity */
+.star {
+  margin-left: 2px;
+}
+.star-large {
+  height: 1rem;
+  width: 1rem;
+}
+.star-small {
+  margin-bottom: 4px;
+  height: 0.8rem;
+  width: 0.8rem;
+}
+
+
+@media (max-width: 992px) {
+  .show-remove-list {
+    display: none;
+  }
 }
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
@@ -76,57 +88,55 @@ body {
 // -------------------------------------------------- */
 
 html {
-    position: relative;
-    min-height: 100%;
-  }
-  body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-  }
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
 
-  .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    background-color: #f5f5f5;
-  }
-  
-  // .container .text-muted {
-  //   margin: 20px 0;
-  // }
-  
-  /* Thumbnail styles */
-  .thumbnail img {
-    
-      width: 100%;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
 
-      /* height: 174px; */
-  }
-  
-  .thumbnail {
-      padding: 0;
-  }
-  
-  .thumbnail .caption-full {
-      padding: 9px;
-  }
-  
-  /* Google Map styles */
-  #map {
-      height: 400px;
-      width: 100%;
-  }
-  
-  /* Campground show page delete button */
-  .delete-form {
-      display: inline-block;
-  }
-  
-  /* Flexbox grid fix */
-  .flex-wrap {
-    display:flex;
-    flex-wrap: wrap;
-  }
-  
+// .container .text-muted {
+//   margin: 20px 0;
+// }
+
+/* Thumbnail styles */
+.thumbnail img {
+  width: 100%;
+
+  /* height: 174px; */
+}
+
+.thumbnail {
+  padding: 0;
+}
+
+.thumbnail .caption-full {
+  padding: 9px;
+}
+
+/* Google Map styles */
+#map {
+  height: 400px;
+  width: 100%;
+}
+
+/* Campground show page delete button */
+.delete-form {
+  display: inline-block;
+}
+
+/* Flexbox grid fix */
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}

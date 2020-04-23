@@ -3,17 +3,26 @@
     <div class="card">
         <h5 class="card-header">Edit Comment</h5>
         <div class="card-body">
-            <form action="/campgrounds/<%= campground_id %>/comments/<%=comment._id %>?_method=PUT" method="POST">
+            <form action="/campgrounds/<%= campground_id %>/comments/<%=review._id %>?_method=PUT" method="POST">
                 <div class="form-group">
-                    <!-- <label for="comment">comment</label> -->
-                    <textarea class="form-control" type="text" name="comment[text]"
-                        rows="3"><%=comment.text %></textarea>
+                    <label for="rating">Rating</label>
+                    <select class="form-control" id="rating" name="rating">
+                      <option <%= review.rating === 1 ? "selected" : "" %>>1</option>
+                      <option <%= review.rating === 2 ? "selected" : "" %>>2</option>
+                      <option <%= review.rating === 3 ? "selected" : "" %>>3</option>
+                      <option <%= review.rating === 4 ? "selected" : "" %>>4</option>
+                      <option <%= review.rating === 5 ? "selected" : "" %>>5</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" class="form-control" type="text" name="comment" rows="3"><%= review.comment %> </textarea>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Submit!</button>
                 </div>
             </form>
-            <a class="text-primary" href="/campgrounds/<%= campground_id %>">Go Back</a>
+            <a class="text-primary" href="/campgrounds/id-<%= campground_id %>">Go Back</a>
         </div>
     </div>
 </div>
