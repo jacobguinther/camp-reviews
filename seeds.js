@@ -69,7 +69,7 @@ async function seedDB() {
           }
 
           Review.create(reviewsArr, async (err, allReviews) => {
-            randomCampground.location = `${faker.address.city()}, ${faker.address.state()}`;
+            randomCampground.location = `Boulder, CO`;
             randomCampground.reviews = allReviews;
             await Campground.create(randomCampground);
           });
