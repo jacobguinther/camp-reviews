@@ -25,6 +25,12 @@ $component-active-bg: rgba(#343a40, 0.5);
 body {
   background-color: #fff !important;
 }
+
+.jumbotron .container form .form-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 .alert p {
   margin: 0;
 }
@@ -84,6 +90,12 @@ body {
 }
 .review-link:hover {
   text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .jumbotron .container form .form-row div {
+    margin: 0 0 16px 0 !important;
+  }
 }
 
 @media (max-width: 992px) {
