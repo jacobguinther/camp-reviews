@@ -6,8 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>YelpCamp</title>
+  <link rel="icon" href="/yelpcampfavicon.png" type="image" />
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
-  
+
 </head>
 
 <body>
@@ -31,15 +32,16 @@
           </li>
           <% } else { %>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               <%= currentUser.username %>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dark bg-primary" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu dropdown-menu-right bg-secondary" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="/profile">Profile</a>
               <a class="dropdown-item" href="/campgrounds/new">Add Campground</a>
               <!-- <div class="dropdown-divider"></div> -->
-              <hr class="m-0"></hr>
+              <hr class="m-0">
+              </hr>
               <a class="dropdown-item" href="/logout">Logout</a>
             </div>
           </li>
@@ -60,5 +62,5 @@
     </div>
     <% } %>
   </div>
-  
+
   <div class="container-lg pb-4">
