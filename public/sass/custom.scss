@@ -82,6 +82,9 @@ body {
   height: 0.8rem;
   width: 0.8rem;
 }
+.review-link:hover {
+  text-decoration: none;
+}
 
 @media (max-width: 992px) {
   .show-remove-list {

@@ -58,37 +58,39 @@
                 </small> -->
                 <small class="text-muted">
                     <% if (campground.reviews.length) { %>
-                    <span>
-                        <% let total = 0 %>
-                        <% for(let i = 0; i < campground.reviews.length; i++){ %>
-                        <% total += campground.reviews[i].rating; %>
-                        <% } %>
-                        <% const campgroundRating = total / campground.reviews.length; %>
-                        <% const roundedRating = round_to_precision(campgroundRating, 0.5) %>
-
-                        <% if(roundedRating % 1 !== 0){ %>
-                        <% const yellowStars = (Math.floor(roundedRating)) %>
-                        <% const greyStars = (4 - Math.floor(roundedRating)) %>
-                        <% for(let i = 0; i < yellowStars; i++){ %>
-
-                        <img class="star star-small" src="/star-yellow-sketch.svg">
-                        <% } %>
-                        <img class="star star-small" src="/star-multipath.svg">
-                        <% for(let i = 0; i < greyStars; i++){ %>
-                        <img class="star star-small" src="/star-gray-sketch.svg">
-                        <% } %>
-                        <% }else{ %>
-                        <% const yellowStars = roundedRating %>
-                        <% const greyStars = 5 - roundedRating %>
-                        <% for(let i = 0; i < yellowStars; i++){ %>
-                        <img class="star star-small" src="/star-yellow-sketch.svg">
-                        <% } %>
-                        <% for(let i = 0; i < greyStars; i++){ %>
-                        <img class="star star-small" src="/star-gray-sketch.svg">
-                        <% } %>
-                        <% } %>
-                    </span>
-                    <span class="pl-1"><%= campground.reviews.length %> reviews</span>
+                    <a href="/campgrounds/id-<%= campground._id %>" class="review-link text-muted">
+                        <span>
+                            <% let total = 0 %>
+                            <% for(let i = 0; i < campground.reviews.length; i++){ %>
+                            <% total += campground.reviews[i].rating; %>
+                            <% } %>
+                            <% const campgroundRating = total / campground.reviews.length; %>
+                            <% const roundedRating = round_to_precision(campgroundRating, 0.5) %>
+    
+                            <% if(roundedRating % 1 !== 0){ %>
+                            <% const yellowStars = (Math.floor(roundedRating)) %>
+                            <% const greyStars = (4 - Math.floor(roundedRating)) %>
+                            <% for(let i = 0; i < yellowStars; i++){ %>
+    
+                            <img class="star star-small" src="/star-yellow-sketch.svg">
+                            <% } %>
+                            <img class="star star-small" src="/star-multipath.svg">
+                            <% for(let i = 0; i < greyStars; i++){ %>
+                            <img class="star star-small" src="/star-gray-sketch.svg">
+                            <% } %>
+                            <% }else{ %>
+                            <% const yellowStars = roundedRating %>
+                            <% const greyStars = 5 - roundedRating %>
+                            <% for(let i = 0; i < yellowStars; i++){ %>
+                            <img class="star star-small" src="/star-yellow-sketch.svg">
+                            <% } %>
+                            <% for(let i = 0; i < greyStars; i++){ %>
+                            <img class="star star-small" src="/star-gray-sketch.svg">
+                            <% } %>
+                            <% } %>
+                        </span>
+                        <span class="pl-1"><%= campground.reviews.length %> reviews</span>
+                    </a>
 
                     <% } else { %>
                     <span class="pl-1">No Reviews</span>
