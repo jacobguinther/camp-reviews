@@ -1,6 +1,8 @@
 # YelpCamp
 YelpCamp is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
 
+Visit [YelpCamp](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
+
 ### Front End
 - ejs
 - bootstrap
