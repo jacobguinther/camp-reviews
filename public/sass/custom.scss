@@ -107,6 +107,17 @@ body {
     display: none;
   }
 }
+@media (min-width: 576px) and (max-width: 660px) { 
+  .hide {
+    display: none;
+  }
+ }
+ @media (min-width: 992px) and (max-width: 1200px) { 
+  .hide {
+    display: none;
+  }
+ }
+
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 

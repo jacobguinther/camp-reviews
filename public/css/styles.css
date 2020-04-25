@@ -56,6 +56,14 @@ body {
   .show-remove-list {
     display: none; } }
 
+@media (min-width: 576px) and (max-width: 660px) {
+  .hide {
+    display: none; } }
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  .hide {
+    display: none; } }
+
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
