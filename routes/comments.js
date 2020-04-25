@@ -6,45 +6,12 @@ const express = require("express"),
   { isLoggedIn, checkUserReview, checkIfUserReviewed } = middleware;
 
 // CREATE REVIEW PAGE
-router.get("/new", isLoggedIn,checkIfUserReviewed, (req, res) => {
-  // Campground.findById(req.params.id)
-  //   .populate("reviews")
-  //   .exec((err, campground) => {
-  //     if (err) {
-  //       console.log(err);
-  //       return res.redirect("/campgrounds");
-  //     } else {
-
-  //       let userReviewed = false;
-  //       let reviewId = "";
-  //       if (req.user !== undefined) {
-  //         for (let i = 0; i < campground.reviews.length; i++) {
-  //           if (
-  //             campground.reviews[i].author.id.toString() ===
-  //             req.user._id.toString()
-  //           ) {
-  //             userReviewed = true;
-  //             reviewId = campground.reviews[i].id;
-  //             console.log("reviewID", reviewId);
-  //           }
-  //         }
-  //       }
-
-  //       if(userReviewed !== true){
-  //         console.log("userReviewed: ", userReviewed);
-          res.render("comments/new", { campground: req.campground });
-    //     }else {
-    //       res.redirect(
-    //         `/campgrounds/${req.params.id}/comments/${reviewId}/edit`)
-    //     }
-
-        
-    //   }
-    // });
+router.get("/new", isLoggedIn, checkIfUserReviewed, (req, res) => {
+  res.render("comments/new", { campground: req.campground });
 });
 
 // CREATE REVIEW
-router.post("/", isLoggedIn,checkIfUserReviewed, (req, res) => {
+router.post("/", isLoggedIn, checkIfUserReviewed, (req, res) => {
   console.log("CREATE COMMENT ROUTE HIT");
   const { comment, rating } = req.body;
   const { _id: id, username } = req.user;
@@ -56,10 +23,6 @@ router.post("/", isLoggedIn,checkIfUserReviewed, (req, res) => {
     .then((values) => {
       const campground = values[0];
       const review = values[1];
-
-
-
-    
 
       review.author.id = id;
       review.author.username = username;
