@@ -37,7 +37,7 @@
     <% campgrounds.forEach((campground)=>{ %>
     <div class="col mb-4">
         <div class="card h-100 shadow-sm">
-            <a href="/campgrounds/id-<%= campground._id %>">
+            <a href="/campgrounds/<%= campground._id %>">
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
             </a>
             <div class="card-body d-flex flex-column">
@@ -48,7 +48,7 @@
                 <p class="card-text">
                     <%= text_truncate(campground.description,100 ,"...") %>
                 </p>
-                <a href="/campgrounds/id-<%= campground._id %>" class="btn btn-primary mt-auto">
+                <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary mt-auto">
                     More Info
                 </a>
             </div>
@@ -58,7 +58,7 @@
                 </small> -->
                 <small class="text-muted">
                     <% if (campground.reviews.length) { %>
-                    <a href="/campgrounds/id-<%= campground._id %>" class="review-link text-muted">
+                    <a href="/campgrounds/<%= campground._id %>" class="review-link text-muted">
                         <span>
                             <% let total = 0 %>
                             <% for(let i = 0; i < campground.reviews.length; i++){ %>

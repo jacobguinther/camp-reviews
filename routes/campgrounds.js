@@ -113,7 +113,7 @@ router.post("/", isLoggedIn, async (req, res) => {
       console.log(err);
     } else {
       req.flash("success", "Created a campground!");
-      res.redirect(`/campgrounds/id-${newlyCreated._id}`);
+      res.redirect(`/campgrounds/${newlyCreated._id}`);
     }
   });
 });
@@ -152,7 +152,7 @@ router.put("/:id", async (req, res) => {
         res.redirect("back");
       } else {
         req.flash("success", "Successfully Updated!");
-        res.redirect("/campgrounds/id-" + campground._id);
+        res.redirect("/campgrounds/" + campground._id);
       }
     }
   );
@@ -186,7 +186,7 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
 });
 
 // SHOW CAMPGROUND
-router.get("/id-:id", (req, res) => {
+router.get("/:id", (req, res) => {
   Campground.findById(req.params.id)
     .populate("reviews")
     .exec((err, campground) => {

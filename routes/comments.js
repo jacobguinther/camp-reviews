@@ -3,24 +3,52 @@ const express = require("express"),
   Campground = require("../models/campground"),
   Review = require("../models/review"),
   middleware = require("../middleware"),
-  { isLoggedIn, checkUserReview } = middleware;
+  { isLoggedIn, checkUserReview, checkIfUserReviewed } = middleware;
 
 // CREATE REVIEW PAGE
-router.get("/new", isLoggedIn, (req, res) => {
-  const CAMPGROUND = Campground.findById(req.params.id);
-  CAMPGROUND.then((campground) => {
-    res.render("comments/new", { campground: campground });
-  }).catch((err) => {
-    console.log("ERROR FINDING CAMPGROUND:", err);
-  });
+router.get("/new", isLoggedIn,checkIfUserReviewed, (req, res) => {
+  // Campground.findById(req.params.id)
+  //   .populate("reviews")
+  //   .exec((err, campground) => {
+  //     if (err) {
+  //       console.log(err);
+  //       return res.redirect("/campgrounds");
+  //     } else {
+
+  //       let userReviewed = false;
+  //       let reviewId = "";
+  //       if (req.user !== undefined) {
+  //         for (let i = 0; i < campground.reviews.length; i++) {
+  //           if (
+  //             campground.reviews[i].author.id.toString() ===
+  //             req.user._id.toString()
+  //           ) {
+  //             userReviewed = true;
+  //             reviewId = campground.reviews[i].id;
+  //             console.log("reviewID", reviewId);
+  //           }
+  //         }
+  //       }
+
+  //       if(userReviewed !== true){
+  //         console.log("userReviewed: ", userReviewed);
+          res.render("comments/new", { campground: req.campground });
+    //     }else {
+    //       res.redirect(
+    //         `/campgrounds/${req.params.id}/comments/${reviewId}/edit`)
+    //     }
+
+        
+    //   }
+    // });
 });
 
 // CREATE REVIEW
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", isLoggedIn,checkIfUserReviewed, (req, res) => {
   console.log("CREATE COMMENT ROUTE HIT");
   const { comment, rating } = req.body;
   const { _id: id, username } = req.user;
-  let review = {comment, rating};
+  let review = { comment, rating };
   const CAMPGROUND = Campground.findById(req.params.id);
   const REVIEW = Review.create(review);
   const promiseArr = [CAMPGROUND, REVIEW];
@@ -28,18 +56,23 @@ router.post("/", isLoggedIn, (req, res) => {
     .then((values) => {
       const campground = values[0];
       const review = values[1];
+
+
+
+    
+
       review.author.id = id;
       review.author.username = username;
       review.save();
       campground.reviews.push(review);
       campground.save();
       req.flash("success", "Created a comment!");
-      res.redirect("/campgrounds/id-" + campground._id);
+      res.redirect("/campgrounds/" + campground._id);
     })
     .catch((err) => {
       console.log("ERROR CREATING REVIEW:", err);
       req.flash("error", "Error creating comment.");
-      res.redirect("/campgrounds/id-" + req.params.id);
+      res.redirect("/campgrounds/" + req.params.id);
     });
 });
 
@@ -55,10 +88,10 @@ router.get("/:reviewId/edit", isLoggedIn, checkUserReview, (req, res) => {
 router.put("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
   console.log("UPDATE COMMENT ROUTE HIT");
   const { comment, rating } = req.body;
-  let review = {comment, rating};
+  let review = { comment, rating };
   const REVIEW = Review.findByIdAndUpdate(req.params.reviewId, review);
   REVIEW.then(() => {
-    res.redirect("/campgrounds/id-" + req.params.id);
+    res.redirect("/campgrounds/" + req.params.id);
   }).catch((err) => {
     console.log("ERROR UPDATING COMMENT", err);
     res.render("edit");
@@ -86,7 +119,7 @@ router.delete("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
             return res.redirect("/");
           }
           req.flash("error", "Review deleted!");
-          res.redirect("/campgrounds/id-" + req.params.id);
+          res.redirect("/campgrounds/" + req.params.id);
         });
       }
     }

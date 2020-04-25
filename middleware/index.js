@@ -49,6 +49,40 @@ module.exports = {
       }
     });
   },
+  
+  checkIfUserReviewed: (req,res,next) =>{
+    Campground.findById(req.params.id)
+    .populate("reviews")
+    .exec((err, campground) => {
+      if (err) {
+        console.log(err);
+        return res.redirect("/campgrounds");
+      } else {
+        let userReviewed = false;
+        let reviewId = "";
+        if (req.user !== undefined) {
+          for (let i = 0; i < campground.reviews.length; i++) {
+            if (
+              campground.reviews[i].author.id.toString() ===
+              req.user._id.toString()
+            ) {
+              userReviewed = true;
+              reviewId = campground.reviews[i].id;
+            }
+          }
+        }
+        if(userReviewed !== true){
+          req.campground = campground
+          next();
+        }else {
+        req.flash("error", "You already have a review for this campground.");
+          res.redirect(
+            `/campgrounds/${req.params.id}/comments/${reviewId}/edit`)
+        }
+        
+      }
+    });
+  },
 
   isAdmin: (req, res, next) => {
     if (req.user.isAdmin) {
