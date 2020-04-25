@@ -100,17 +100,34 @@
 
         <div class="d-flex justify-content-between">
           <h5 class="card-title">Reviews</h5>
-
         </div>
+
         <ul class="list-group list-group-flush">
           <% campground.reviews.forEach(function(review){ %>
           <div class="d-flex justify-content-between">
-            <p class="card-text m-0">
-              <small class="text-muted">
-                <%= review.author.username %>
-              </small>
-            </p>
-            <p class="card-text m-0">
+            <div>
+              <p class="card-text m-0">
+                <small class="text-muted">
+                  <%= review.author.username %>
+                </small>
+              </p>
+              <div class="mb-2">
+                <%= review.comment %> <% if(currentUser &&
+                  review.author.id.equals(currentUser._id) || currentUser &&
+                  currentUser.isAdmin){ %>
+                <div class="pull-right">
+                  <a href="/campgrounds/<%=campground._id%>/comments/<%=review._id%>/edit"
+                    class="btn btn-sm btn-primary">EDIT</a>
+                  <form class="delete-form"
+                    action="/campgrounds/<%=campground._id%>/comments/<%=review._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-primary">DELETE</button>
+                  </form>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="card-text m-0 no-wrap">
               <% if(true){ %>
               <% const rating = review.rating %>
               <% if(rating % 1 !== 0){ %>
@@ -137,27 +154,13 @@
               <p>nope</p>
               <% } %>
             </p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div class="mb-2">
-              <%= review.comment %> <% if(currentUser &&
-                  review.author.id.equals(currentUser._id) || currentUser &&
-                  currentUser.isAdmin){ %>
-              <div class="pull-right">
-                <a href="/campgrounds/<%=campground._id%>/comments/<%=review._id%>/edit"
-                  class="btn btn-sm btn-primary">EDIT</a>
-                <form class="delete-form"
-                  action="/campgrounds/<%=campground._id%>/comments/<%=review._id%>?_method=DELETE" method="POST">
-                  <button class="btn btn-sm btn-primary">DELETE</button>
-                </form>
-              </div>
-              <% } %>
+            <p class="card-text text-right"><small class="text-muted"><%=
+                moment(review.createdAt).fromNow() %></small></p>
             </div>
-            <p class="card-text"><small class="text-muted"><%=
-                moment(campground.createdAt).fromNow() %></small></p>
           </div>
           <% }) %>
         </ul>
+
       </div>
       <% if(!userReviewed){ %>
       <hr class="m-0">

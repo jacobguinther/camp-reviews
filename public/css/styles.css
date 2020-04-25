@@ -8,6 +8,10 @@
 body {
   background-color: #fff !important; }
 
+.jumbotron .container form .form-row {
+  margin-left: 0px;
+  margin-right: 0px; }
+
 .alert p {
   margin: 0; }
 
@@ -38,8 +42,26 @@ body {
   height: 0.8rem;
   width: 0.8rem; }
 
+.review-link:hover {
+  text-decoration: none; }
+
+.no-wrap {
+  white-space: nowrap; }
+
+@media (max-width: 768px) {
+  .jumbotron .container form .form-row div {
+    margin: 0 0 16px 0 !important; } }
+
 @media (max-width: 992px) {
   .show-remove-list {
+    display: none; } }
+
+@media (min-width: 576px) and (max-width: 660px) {
+  .hide {
+    display: none; } }
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  .hide {
     display: none; } }
 
 /*!
