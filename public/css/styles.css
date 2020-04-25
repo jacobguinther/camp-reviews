@@ -45,6 +45,9 @@ body {
 .review-link:hover {
   text-decoration: none; }
 
+.no-wrap {
+  white-space: nowrap; }
+
 @media (max-width: 768px) {
   .jumbotron .container form .form-row div {
     margin: 0 0 16px 0 !important; } }

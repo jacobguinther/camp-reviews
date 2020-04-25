@@ -52,6 +52,7 @@ body {
   height: 15em;
 }
 
+
 // .custom-radio .custom-control-label::before {
 //   background-color: #fff;
 //   box-shadow: 0 0 5px #141609;
@@ -90,6 +91,9 @@ body {
 }
 .review-link:hover {
   text-decoration: none;
+}
+.no-wrap {
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
