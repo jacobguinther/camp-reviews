@@ -29,12 +29,12 @@ router.post("/", isLoggedIn, checkIfUserReviewed, (req, res) => {
       review.save();
       campground.reviews.push(review);
       campground.save();
-      req.flash("success", "Created a comment!");
+      req.flash("success", "Created a review!");
       res.redirect("/campgrounds/" + campground._id);
     })
     .catch((err) => {
       console.log("ERROR CREATING REVIEW:", err);
-      req.flash("error", "Error creating comment.");
+      req.flash("error", "Error creating review.");
       res.redirect("/campgrounds/" + req.params.id);
     });
 });
@@ -43,7 +43,7 @@ router.post("/", isLoggedIn, checkIfUserReviewed, (req, res) => {
 router.get("/:reviewId/edit", isLoggedIn, checkUserReview, (req, res) => {
   res.render("comments/edit", {
     campground_id: req.params.id,
-    review: req.comment,
+    review: req.review,
   });
 });
 
@@ -67,7 +67,7 @@ router.delete("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
     req.params.id,
     {
       $pull: {
-        reviews: req.comment.id,
+        reviews: req.review.id,
       },
     },
     (err) => {
@@ -76,7 +76,7 @@ router.delete("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
         req.flash("error", err.message);
         res.redirect("/");
       } else {
-        req.comment.remove((err) => {
+        req.review.remove((err) => {
           if (err) {
             req.flash("error", err.message);
             return res.redirect("/");

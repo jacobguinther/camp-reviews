@@ -41,7 +41,7 @@ module.exports = {
         foundReview.author.id.equals(req.user._id) ||
         req.user.isAdmin
       ) {
-        req.comment = foundReview;
+        req.review = foundReview;
         next();
       } else {
         req.flash("error", "You don't have permission to do that!");
