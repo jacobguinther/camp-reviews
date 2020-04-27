@@ -1,15 +1,11 @@
-// const mongoose = require("mongoose");
 const Campground = require("./models/campground");
-// const Comment = require("./models/review");
 const Review = require("./models/review");
 const User = require("./models/user");
 const moment = require("moment");
-const faker = require("faker");
 
 async function seedDB() {
   const numCampgrounds = 30;
   console.clear();
-  // console.log("name", faker.address.city(), faker.address.state());
   console.log(moment().format("MMMM Do YYYY, h:mm a"));
   // Delete Everything In Database
   async function deleteEverything(callback) {

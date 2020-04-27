@@ -4,7 +4,6 @@ const express = require("express"),
  NodeGeocoder = require('node-geocoder');
 
   Campground = require("../models/campground"),
-  // Comment = require("../models/comment"),
   Review = require("../models/review"),
   middleware = require("../middleware"),
   { isLoggedIn, checkUserCampground, isAdmin, isSafe } = middleware;

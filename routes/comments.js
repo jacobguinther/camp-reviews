@@ -12,7 +12,7 @@ router.get("/new", isLoggedIn, checkIfUserReviewed, (req, res) => {
 
 // CREATE REVIEW
 router.post("/", isLoggedIn, checkIfUserReviewed, (req, res) => {
-  console.log("CREATE COMMENT ROUTE HIT");
+  console.log("CREATE REVIEW ROUTE HIT");
   const { comment, rating } = req.body;
   const { _id: id, username } = req.user;
   let review = { comment, rating };
@@ -39,7 +39,7 @@ router.post("/", isLoggedIn, checkIfUserReviewed, (req, res) => {
     });
 });
 
-// UPDATE COMMENT PAGE
+// UPDATE REVIEW PAGE
 router.get("/:reviewId/edit", isLoggedIn, checkUserReview, (req, res) => {
   res.render("comments/edit", {
     campground_id: req.params.id,
@@ -47,21 +47,21 @@ router.get("/:reviewId/edit", isLoggedIn, checkUserReview, (req, res) => {
   });
 });
 
-// UPDATE COMMENT
+// UPDATE REVIEW
 router.put("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
-  console.log("UPDATE COMMENT ROUTE HIT");
+  console.log("UPDATE REVIEW ROUTE HIT");
   const { comment, rating } = req.body;
   let review = { comment, rating };
   const REVIEW = Review.findByIdAndUpdate(req.params.reviewId, review);
   REVIEW.then(() => {
     res.redirect("/campgrounds/" + req.params.id);
   }).catch((err) => {
-    console.log("ERROR UPDATING COMMENT", err);
+    console.log("ERROR UPDATING REVIEW", err);
     res.render("edit");
   });
 });
 
-// DELETE COMMENT
+// DELETE REVIEW
 router.delete("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
   Campground.findByIdAndUpdate(
     req.params.id,
@@ -72,7 +72,7 @@ router.delete("/:reviewId", isLoggedIn, checkUserReview, (req, res) => {
     },
     (err) => {
       if (err) {
-        console.log("ERROR DELETING COMMENT:", err);
+        console.log("ERROR DELETING REVIEW:", err);
         req.flash("error", err.message);
         res.redirect("/");
       } else {

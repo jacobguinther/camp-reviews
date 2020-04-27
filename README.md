@@ -21,7 +21,7 @@ Go to [YelpCamp](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
 - User Authorization (Passport)
 - CRUD Operations for:
   - Campgrounds
-  - Campground Comments
+  - Campground Reviews
 
 ### Run It Locally
 > These instructions are for MacOS
