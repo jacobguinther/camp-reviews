@@ -77,7 +77,7 @@ module.exports = {
         }else {
         req.flash("error", "You already have a review for this campground.");
           res.redirect(
-            `/campgrounds/${req.params.id}/comments/${reviewId}/edit`)
+            `/campgrounds/${req.params.id}/reviews/${reviewId}/edit`)
         }
         
       }

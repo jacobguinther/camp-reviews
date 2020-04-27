@@ -12,7 +12,7 @@ const express = require("express"),
   methodOverride = require("method-override");
 
 //requiring routes
-const commentRoutes = require("./routes/comments"),
+const reviewRoutes = require("./routes/reviews"),
   campgroundRoutes = require("./routes/campgrounds"),
   indexRoutes = require("./routes/index");
 
@@ -67,7 +67,7 @@ app.use(function (req, res, next) {
 
 app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function () {
   console.log("The YelpCamp Server Has Started!");
