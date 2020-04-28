@@ -1,34 +1,31 @@
-const express = require("express"),
-  router = express.Router(),
+const NodeGeocoder = require('node-geocoder');
+const express = require('express');
+const Campground = require('../models/campground');
+const Review = require('../models/review');
+const middleware = require('../middleware');
 
- NodeGeocoder = require('node-geocoder');
-
-  Campground = require("../models/campground"),
-  Review = require("../models/review"),
-  middleware = require("../middleware"),
-  { isLoggedIn, checkUserCampground, isAdmin, isSafe } = middleware;
-
-  const options = {
-    provider: 'google',
-    // Optional depending on the providers
-    apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
-    formatter: null // 'gpx', 'string', ...
-  };
-  const geocoder = NodeGeocoder(options);
+const router = express.Router();
+const { isLoggedIn, checkUserCampground } = middleware;
+const options = {
+  provider: 'google',
+  apiKey: process.env.GOOGLE_API_KEY,
+  formatter: null,
+};
+const geocoder = NodeGeocoder(options);
 
 // Define escapeRegex function for search feature
-function escapeRegex(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
+// function escapeRegex(text) {
+//   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+// }
 
 // CAMPGROUND INDEX ROOT
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   // console.log("/ ROOT HIT");
-  res.redirect("campgrounds/page-1");
+  res.redirect('campgrounds/page-1');
 });
 
 // CAMPGROUND INDEX
-router.get("/page-:page", (req, res) => {
+router.get('/page-:page', (req, res) => {
   const perPage = 9;
   const currentPage = req.params.page || 1;
 
@@ -38,18 +35,17 @@ router.get("/page-:page", (req, res) => {
   const searchQuery = Object.keys(req.query)[0];
   const categoryQuery = Object.keys(req.query)[1];
 
-  const searchTerm = search || "";
-  const searchCategory = category === "author" ? "author.username" : "name";
+  const searchTerm = search || '';
+  const searchCategory = category === 'author' ? 'author.username' : 'name';
   let dbquery;
   if (Object.keys(req.query).length) {
     if (req.query.search.length === 0) {
       dbquery = {};
-      console.log("no length");
-      res.redirect("/campgrounds/page-1");
+      console.log('no length');
+      res.redirect('/campgrounds/page-1');
       return;
-    } else {
-      dbquery = { [searchCategory]: { $regex: searchTerm, $options: "i" } };
     }
+    dbquery = { [searchCategory]: { $regex: searchTerm, $options: 'i' } };
   }
   Campground.find(dbquery, (err) => {
     if (err) {
@@ -58,12 +54,12 @@ router.get("/page-:page", (req, res) => {
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
-    .populate("reviews")
+    .populate('reviews')
     .exec((err, campgrounds) => {
       Campground.countDocuments(dbquery).exec((err, count) => {
         const totalPages = Math.ceil(count / perPage) || 1;
-        if (err) return next(err);
-        res.render("campgrounds/index", {
+        if (err) console.log(err);
+        res.render('campgrounds/index', {
           campgrounds,
           currentPage,
           totalPages,
@@ -72,26 +68,29 @@ router.get("/page-:page", (req, res) => {
           categoryQuery,
           categoryQueryValue,
         });
+        return true;
       });
     });
 });
 
 // CREATE CAMPGROUND PAGE
-router.get("/new", isLoggedIn, (req, res) => {
-  res.render("campgrounds/new");
+router.get('/new', isLoggedIn, (req, res) => {
+  res.render('campgrounds/new');
 });
 
 // CREATE CAMPGROUND
-router.post("/", isLoggedIn, async (req, res) => {
-  const { name, image, description, location, cost } = req.body;
+router.post('/', isLoggedIn, async (req, res) => {
+  const {
+    name, image, description, location, cost,
+  } = req.body;
   const { _id: id, username } = req.user;
-  
+
   const data = await geocoder.geocode(location);
-  let lat = undefined;
-  let lng = undefined;
-  if(data.length){
-     lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
-     lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
+  let lat;
+  let lng;
+  if (data.length) {
+    lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
+    lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
   }
   const author = {
     id,
@@ -111,26 +110,28 @@ router.post("/", isLoggedIn, async (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      req.flash("success", "Created a campground!");
+      req.flash('success', 'Created a campground!');
       res.redirect(`/campgrounds/${newlyCreated._id}`);
     }
   });
 });
 
 // UPDATE CAMPGROUND PAGE
-router.get("/:id/edit", isLoggedIn, checkUserCampground, (req, res) => {
-  res.render("campgrounds/edit", { campground: req.campground });
+router.get('/:id/edit', isLoggedIn, checkUserCampground, (req, res) => {
+  res.render('campgrounds/edit', { campground: req.campground });
 });
 
 // UPDATE CAMPGROUND
-router.put("/:id", async (req, res) => {
-  const { name, image, description, location, cost } = req.body;
+router.put('/:id', async (req, res) => {
+  const {
+    name, image, description, location, cost,
+  } = req.body;
   const data = await geocoder.geocode(location);
-  let lat = undefined;
-  let lng = undefined;
-  if(data.length){
-     lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
-     lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
+  let lat;
+  let lng;
+  if (data.length) {
+    lat = Math.round((data[0].latitude + Number.EPSILON) * 100) / 100;
+    lng = Math.round((data[0].longitude + Number.EPSILON) * 100) / 100;
   }
 
   const newData = {
@@ -147,19 +148,19 @@ router.put("/:id", async (req, res) => {
     { $set: newData },
     (err, campground) => {
       if (err) {
-        req.flash("error", err.message);
-        res.redirect("back");
+        req.flash('error', err.message);
+        res.redirect('back');
       } else {
-        req.flash("success", "Successfully Updated!");
-        res.redirect("/campgrounds/" + campground._id);
+        req.flash('success', 'Successfully Updated!');
+        res.redirect(`/campgrounds/${campground._id}`);
       }
-    }
+    },
   );
 });
 
 // DELETE CAMPGROUND
-router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
-  console.log("req.campground.reviews", req.campground.reviews);
+router.delete('/:id', isLoggedIn, checkUserCampground, (req, res) => {
+  console.log('req.campground.reviews', req.campground.reviews);
   Review.deleteMany(
     {
       _id: {
@@ -168,42 +169,43 @@ router.delete("/:id", isLoggedIn, checkUserCampground, (req, res) => {
     },
     (err) => {
       if (err) {
-        req.flash("error", err.message);
-        res.redirect("/");
+        req.flash('error', err.message);
+        res.redirect('/');
       } else {
         req.campground.deleteOne((err) => {
           if (err) {
-            req.flash("error", err.message);
-            return res.redirect("/");
+            req.flash('error', err.message);
+            return res.redirect('/');
           }
-          req.flash("error", "Campground deleted!");
-          res.redirect("/campgrounds");
+          req.flash('error', 'Campground deleted!');
+          return res.redirect('/campgrounds');
         });
       }
-    }
+    },
   );
 });
 
 // SHOW CAMPGROUND
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   Campground.findById(req.params.id)
-    .populate("reviews")
+    .populate('reviews')
     .exec((err, campground) => {
       if (err || !campground) {
         console.log(err);
-        return res.redirect("/campgrounds");
+        return res.redirect('/campgrounds');
       }
       let userReviewed = false;
       if (req.user !== undefined) {
-        for (let i = 0; i < campground.reviews.length; i++) {
-            if(campground.reviews[i].author.id.toString() === req.user._id.toString()){
+        for (let i = 0; i < campground.reviews.length; i += 1) {
+          if (
+            campground.reviews[i].author.id.toString()
+            === req.user._id.toString()
+          ) {
             userReviewed = true;
           }
         }
-        res.render("campgrounds/show", { campground, userReviewed });
-      } else {
-        res.render("campgrounds/show", { campground, userReviewed });
       }
+      return res.render('campgrounds/show', { campground, userReviewed });
     });
 });
 
