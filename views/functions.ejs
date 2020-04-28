@@ -1,6 +1,6 @@
-<% 
-text_truncate = (str, length, ending) => {
-    if (length == null) {
+<%
+textTruncate = (str, length, ending) => {
+  if (length == null) {
       length = 100;
     }
     if (ending == null) {
@@ -17,5 +17,4 @@ text_truncate = (str, length, ending) => {
     return y - (y % (precision === undefined ? 1 : +precision));
 }
  %>
-
-
+ 

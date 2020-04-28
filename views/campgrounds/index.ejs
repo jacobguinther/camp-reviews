@@ -46,7 +46,7 @@
                 </h4>
                 <%- include('../functions') %>
                 <p class="card-text">
-                    <%= text_truncate(campground.description,100 ,"...") %>
+                    <%= textTruncate(campground.description,100 ,"...") %>
                 </p>
                 <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary mt-auto">
                     More Info

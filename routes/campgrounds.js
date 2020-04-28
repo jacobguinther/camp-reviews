@@ -20,7 +20,6 @@ const geocoder = NodeGeocoder(options);
 
 // CAMPGROUND INDEX ROOT
 router.get('/', (req, res) => {
-  // console.log("/ ROOT HIT");
   res.redirect('campgrounds/page-1');
 });
 
