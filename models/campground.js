@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const campgroundSchema = new mongoose.Schema({
   name: String,
@@ -12,16 +12,16 @@ const campgroundSchema = new mongoose.Schema({
   author: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     username: String,
   },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
+      ref: 'Review',
     },
   ],
 });
 
-module.exports = mongoose.model("Campground", campgroundSchema);
+module.exports = mongoose.model('Campground', campgroundSchema);

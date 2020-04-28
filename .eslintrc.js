@@ -13,6 +13,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  rules: {},
+  rules: {
+    'no-console': 'off',
+    'no-underscore-dangle': 'off',
+  },
   // plugins: ['ejs-js'],
 };
