@@ -1,8 +1,8 @@
-const NodeGeocoder = require('node-geocoder');
 const express = require('express');
-const Campground = require('../models/campground');
+const NodeGeocoder = require('node-geocoder');
 const Review = require('../models/review');
 const middleware = require('../middleware');
+const Campground = require('../models/campground');
 
 const router = express.Router();
 const { isLoggedIn, checkUserCampground } = middleware;
@@ -13,11 +13,6 @@ const options = {
 };
 const geocoder = NodeGeocoder(options);
 
-// Define escapeRegex function for search feature
-// function escapeRegex(text) {
-//   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-// }
-
 // CAMPGROUND INDEX ROOT
 router.get('/', (req, res) => {
   res.redirect('campgrounds/page-1');
@@ -27,15 +22,14 @@ router.get('/', (req, res) => {
 router.get('/page-:page', (req, res) => {
   const perPage = 9;
   const currentPage = req.params.page || 1;
-
   const { search, category } = req.query;
   const searchQueryValue = search;
   const categoryQueryValue = category;
   const searchQuery = Object.keys(req.query)[0];
   const categoryQuery = Object.keys(req.query)[1];
-
   const searchTerm = search || '';
   const searchCategory = category === 'author' ? 'author.username' : 'name';
+
   let dbquery;
   if (Object.keys(req.query).length) {
     if (req.query.search.length === 0) {
@@ -46,18 +40,18 @@ router.get('/page-:page', (req, res) => {
     }
     dbquery = { [searchCategory]: { $regex: searchTerm, $options: 'i' } };
   }
-  Campground.find(dbquery, (err) => {
-    if (err) {
-      console.log(err);
+  Campground.find(dbquery, (err1) => {
+    if (err1) {
+      console.log(err1);
     }
   })
     .skip(perPage * currentPage - perPage)
     .limit(perPage)
     .populate('reviews')
     .exec((err, campgrounds) => {
-      Campground.countDocuments(dbquery).exec((err, count) => {
+      Campground.countDocuments(dbquery).exec((err2, count) => {
         const totalPages = Math.ceil(count / perPage) || 1;
-        if (err) console.log(err);
+        if (err2) console.log(err2);
         res.render('campgrounds/index', {
           campgrounds,
           currentPage,
@@ -105,14 +99,15 @@ router.post('/', isLoggedIn, async (req, res) => {
     lat,
     lng,
   };
-  Campground.create(newCampground, (err, newlyCreated) => {
-    if (err) {
-      console.log(err);
-    } else {
+  const newCreatedCampground = Campground.create(newCampground);
+  newCreatedCampground
+    .then((campground) => {
       req.flash('success', 'Created a campground!');
-      res.redirect(`/campgrounds/${newlyCreated._id}`);
-    }
-  });
+      res.redirect(`/campgrounds/${campground._id}`);
+    })
+    .catch((err) => {
+      console.log('Error Creating Campground', err);
+    });
 });
 
 // UPDATE CAMPGROUND PAGE
@@ -147,7 +142,7 @@ router.put('/:id', async (req, res) => {
     { $set: newData },
     (err, campground) => {
       if (err) {
-        req.flash('error', err.message);
+        req.flash('Error Updating Campground', err.message);
         res.redirect('back');
       } else {
         req.flash('success', 'Successfully Updated!');
@@ -159,25 +154,24 @@ router.put('/:id', async (req, res) => {
 
 // DELETE CAMPGROUND
 router.delete('/:id', isLoggedIn, checkUserCampground, (req, res) => {
-  console.log('req.campground.reviews', req.campground.reviews);
   Review.deleteMany(
     {
       _id: {
         $in: req.campground.reviews,
       },
     },
-    (err) => {
-      if (err) {
-        req.flash('error', err.message);
+    (err1) => {
+      if (err1) {
+        req.flash('Error deleting campground', err1.message);
         res.redirect('/');
       } else {
-        req.campground.deleteOne((err) => {
-          if (err) {
-            req.flash('error', err.message);
-            return res.redirect('/');
-          }
+        const CAMPGROUND = req.campground.deleteOne();
+        CAMPGROUND.then(() => {
           req.flash('error', 'Campground deleted!');
           return res.redirect('/campgrounds');
+        }).catch((err2) => {
+          req.flash('error', err2.message);
+          return res.redirect('/');
         });
       }
     },

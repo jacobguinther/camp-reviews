@@ -16,9 +16,9 @@ router.post('/', isLoggedIn, checkIfUserReviewed, (req, res) => {
   console.log('CREATE REVIEW ROUTE HIT');
   const { comment, rating } = req.body;
   const { _id: id, username } = req.user;
-  const review = { comment, rating };
+  const newReview = { comment, rating };
   const CAMPGROUND = Campground.findById(req.params.id);
-  const REVIEW = Review.create(review);
+  const REVIEW = Review.create(newReview);
   const promiseArr = [CAMPGROUND, REVIEW];
   Promise.all(promiseArr)
     .then((values) => {
@@ -71,15 +71,15 @@ router.delete('/:reviewId', isLoggedIn, checkUserReview, (req, res) => {
         reviews: req.review.id,
       },
     },
-    (err) => {
-      if (err) {
-        console.log('ERROR DELETING REVIEW:', err);
-        req.flash('error', err.message);
+    (err1) => {
+      if (err1) {
+        console.log('ERROR DELETING REVIEW:', err1);
+        req.flash('error', err1.message);
         res.redirect('/');
       } else {
-        req.review.remove((err) => {
-          if (err) {
-            req.flash('error', err.message);
+        req.review.remove((err2) => {
+          if (err2) {
+            req.flash('error', err2.message);
             return res.redirect('/');
           }
           req.flash('error', 'Review deleted!');

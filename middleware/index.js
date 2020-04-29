@@ -14,7 +14,6 @@ module.exports = {
 
   checkUserCampground: (req, res, next) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
-      // prettier-ignore
       if (err || !foundCampground) {
         console.log(err);
         req.flash('error', 'Sorry, that campground does not exist!');
@@ -35,7 +34,6 @@ module.exports = {
   checkUserReview: (req, res, next) => {
     const { reviewId } = req.params;
     Review.findById(reviewId, (err, foundReview) => {
-      // prettier-ignore
       if (err || !foundReview) {
         console.log('ERROR FINDING REVIEW:', err);
         req.flash('error', 'Sorry, that review does not exist!');
@@ -65,7 +63,6 @@ module.exports = {
         let reviewId = '';
         if (req.user !== undefined) {
           for (let i = 0; i < campground.reviews.length; i += 1) {
-            // prettier-ignore
             if (
               campground.reviews[i].author.id.toString()
               === req.user._id.toString()
@@ -92,7 +89,6 @@ module.exports = {
     if (req.user.isAdmin) {
       next();
     } else {
-      // req.flash('error', 'This site is now read only thanks to spam and trolls.');
       res.redirect('back');
     }
   },
