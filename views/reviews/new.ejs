@@ -1,9 +1,9 @@
 <%- include('../partials/header') %>
 <div class="col-md-6 mx-auto">
     <div class="card">
-        <h5 class="card-header">New Comment</h5>
+        <h5 class="card-header">New Review</h5>
         <div class="card-body">
-            <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+            <form action="/campgrounds/<%= campground._id %>/reviews" method="POST">
                 <div class="form-group">
                     <label for="rating">Rating</label>
                     <select class="form-control" id="rating" name="rating">

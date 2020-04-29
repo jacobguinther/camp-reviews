@@ -1,85 +1,85 @@
-const express = require("express"),
-  router = express.Router(),
-  passport = require("passport"),
-  User = require("../models/user");
+const express = require('express');
+const passport = require('passport');
+
+const User = require('../models/user');
+
+const router = express.Router();
 
 // ROOT
-router.get("/", (req, res) => {
-  res.render("landing");
+router.get('/', (req, res) => {
+  res.render('landing');
 });
 
 // SIGNUP USER PAGE
-router.get("/signup", (req, res) => {
-  res.render("signup", { page: "signup" });
+router.get('/signup', (req, res) => {
+  res.render('signup', { page: 'signup' });
 });
 
 // SIGNUP USER
-router.post("/signup", (req, res) => {
+router.post('/signup', (req, res) => {
   const { username, email } = req.body;
-  const newUser = new User({ username: username, email: email });
-  // if(req.body.adminCode === process.env.ADMIN_CODE) {
-  //   newUser.isAdmin = true;
-  // }
+  const newUser = new User({ username, email });
   newUser.isAdmin = false;
-  User.register(newUser, req.body.password, (err, user) => {
+  User.register(newUser, req.body.password, (err) => {
     if (err) {
       console.log(err);
-      return res.render("signup", { error: err.message });
+      return res.render('signup', { error: err.message });
     }
-    passport.authenticate("local")(req, res, () => {
+    passport.authenticate('local')(req, res, () => {
       req.flash(
-        "success",
-        "Successfully Signed Up! Nice to meet you " + req.body.username
+        'success',
+        `Successfully Signed Up! Nice to meet you ${req.body.username}`,
       );
-      res.redirect("/campgrounds");
+      return res.redirect('/campgrounds');
     });
+    return true;
   });
 });
 
 // LOGIN USER PAGE
-router.get("/login", (req, res) => {
-  res.render("login", { page: "login" });
+router.get('/login', (req, res) => {
+  res.render('login', { page: 'login' });
 });
 
 // LOGIN USER
 router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/campgrounds",
-    failureRedirect: "/login",
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/campgrounds',
+    failureRedirect: '/login',
     failureFlash: true,
-    successFlash: "Welcome to YelpCamp!",
+    successFlash: 'Welcome to YelpCamp!',
   }),
   (req, res) => {
-    let lastpage = req.session.returnTo;
-    req.session.returnTo = "";
-    res.redirect(lastpage || "/campgrounds");
-  }
+    const lastpage = req.session.returnTo;
+    req.session.returnTo = '';
+    res.redirect(lastpage || '/campgrounds');
+  },
 );
 
 // LOGOUT USER
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout();
-  req.flash("success", "See you later!");
-  res.redirect("/campgrounds");
+  req.flash('success', 'See you later!');
+  res.redirect('/campgrounds');
 });
 
 // USER PAGE
-router.get("/profile", (req, res) => {
-  res.render("profile", { page: "profile", user: req.user });
+router.get('/profile', (req, res) => {
+  res.render('profile', { page: 'profile', user: req.user });
 });
 
 // DELETE USER
-router.delete("/profile", (req, res) => {
-  console.log("Delete route hit");
+router.delete('/profile', (req, res) => {
+  console.log('Delete route hit');
   User.deleteOne({ _id: req.user._id })
     .then(() => {
-      res.redirect("/campgrounds");
+      res.redirect('/campgrounds');
     })
     .catch((err) => {
-      console.log("error");
+      console.log('Error Deleting User', err);
     });
-  res.redirect("/campgrounds");
+  res.redirect('/campgrounds');
 });
 
 module.exports = router;

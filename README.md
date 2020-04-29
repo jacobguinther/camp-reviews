@@ -1,6 +1,10 @@
 # YelpCamp
 YelpCamp is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
 
+# ![YelpCamp ScreenShot](public/YelpCamp_Screenshot.png)
+
+Go to [YelpCamp](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
+
 ### Front End
 - ejs
 - bootstrap
@@ -19,7 +23,7 @@ YelpCamp is a project from the Udemy course 'The Web Developer' Bootcamp by Colt
 - User Authorization (Passport)
 - CRUD Operations for:
   - Campgrounds
-  - Campground Comments
+  - Campground Reviews
 
 ### Run It Locally
 > These instructions are for MacOS
