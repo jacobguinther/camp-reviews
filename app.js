@@ -2,17 +2,18 @@ require('dotenv').config();
 const express = require('express');
 
 const app = express();
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
+const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const User = require('./models/user');
-const seedDB = require('./seeds');
 
+const seedDB = require('./seeds');
+const User = require('./models/user');
+
+const indexRoutes = require('./routes/index');
 const reviewRoutes = require('./routes/reviews');
 const campgroundRoutes = require('./routes/campgrounds');
-const indexRoutes = require('./routes/index');
 
 mongoose.Promise = global.Promise;
 const databaseUri = `${process.env.MONGODB_URI}` || 'mongodb://localhost/yelp_camp';
@@ -41,7 +42,6 @@ app.locals.moment = require('moment');
 // Seed Database
 seedDB();
 
-// PASSPORT CONFIGURATION
 app.use(
   require('express-session')({
     secret: process.env.SESSION_SECRET,

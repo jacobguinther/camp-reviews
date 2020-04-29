@@ -1,7 +1,8 @@
 const express = require('express');
 const NodeGeocoder = require('node-geocoder');
-const Review = require('../models/review');
+
 const middleware = require('../middleware');
+const Review = require('../models/review');
 const Campground = require('../models/campground');
 
 const router = express.Router();

@@ -1,6 +1,7 @@
 const express = require('express');
-const Review = require('../models/review');
+
 const middleware = require('../middleware');
+const Review = require('../models/review');
 const Campground = require('../models/campground');
 
 const router = express.Router({ mergeParams: true });
