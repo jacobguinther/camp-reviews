@@ -7,7 +7,7 @@ const router = express.Router();
 
 // ROOT
 router.get('/', (req, res) => {
-  res.render('landing');
+  res.redirect('campgrounds/page-1');
 });
 
 // SIGNUP USER PAGE
