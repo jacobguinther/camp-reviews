@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 app.locals.moment = require('moment');
 
 // Seed Database
-seedDB();
+// seedDB();
 
 app.use(
   require('express-session')({
