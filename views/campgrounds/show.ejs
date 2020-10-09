@@ -116,10 +116,10 @@
                   review.author.id.equals(currentUser._id) || currentUser &&
                   currentUser.isAdmin){ %>
                 <div class="pull-right">
-                  <a href="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>/edit"
+                  <a href="/campgrounds/<%=campground._id%>/review/<%=review._id%>/edit"
                     class="btn btn-sm btn-primary">EDIT</a>
                   <form class="delete-form"
-                    action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                    action="/campgrounds/<%=campground._id%>/review/<%=review._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-sm btn-primary">DELETE</button>
                   </form>
                 </div>
@@ -166,7 +166,7 @@
       <hr class="m-0">
       </hr>
       <div class="card-body d-flex">
-        <a class="btn btn-sm btn-primary" role="button" href="/campgrounds/<%= campground._id %>/reviews/new">
+        <a class="btn btn-sm btn-primary" role="button" href="/campgrounds/<%= campground._id %>/review/new">
           Add New Review
         </a>
       </div>

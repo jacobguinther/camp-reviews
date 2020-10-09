@@ -3,7 +3,7 @@
     <div class="card">
         <h5 class="card-header">Edit Review</h5>
         <div class="card-body">
-            <form action="/campgrounds/<%= campground_id %>/reviews/<%=review._id %>?_method=PUT" method="POST">
+            <form action="/campgrounds/<%= campground_id %>/review/<%=review._id %>?_method=PUT" method="POST">
                 <div class="form-group">
                     <label for="rating">Rating</label>
                     <select class="form-control" id="rating" name="rating">

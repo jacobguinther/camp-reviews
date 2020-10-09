@@ -11,9 +11,9 @@ const methodOverride = require('method-override');
 const seedDB = require('./seeds');
 const User = require('./models/user');
 
-const indexRoutes = require('./routes/index');
-const reviewRoutes = require('./routes/reviews');
-const campgroundRoutes = require('./routes/campgrounds');
+const userRoutes = require('./routes/user');
+const reviewRoutes = require('./routes/review');
+const campgroundRoutes = require('./routes/campground');
 
 mongoose.Promise = global.Promise;
 const databaseUri = `${process.env.MONGODB_URI}` || 'mongodb://localhost/yelp_camp';
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 app.locals.moment = require('moment');
 
 // Seed Database
-seedDB();
+// seedDB();
 
 app.use(
   require('express-session')({
@@ -65,9 +65,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', indexRoutes);
+app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
-app.use('/campgrounds/:id/reviews', reviewRoutes);
+app.use('/campgrounds/:id/review', reviewRoutes);
 
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`The YelpCamp Server Has Started: localhost:${process.env.PORT}`);
