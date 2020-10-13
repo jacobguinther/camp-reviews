@@ -1,9 +1,9 @@
-# YelpCamp
-YelpCamp is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
+# CampReviews
+CampReviews is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
 
-# ![YelpCamp ScreenShot](public/YelpCamp_Screenshot.png)
+# ![CampReviews ScreenShot](public/CampReviews_Screenshot.png)
 
-Go to [YelpCamp](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
+Go to [CampReviews](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
 
 ### Front End
 - ejs
@@ -57,7 +57,7 @@ echo "MONGODB_URI=mongodb://127.0.0.1:27017
 PORT=3002
 SESSION_SECRET="You can type whatever you want here or leave it as is" >> .env
 ```
-#### Start YelpCamp
+#### Start CampReviews
 ```sh
 npm run start
 ```

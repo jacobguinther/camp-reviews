@@ -48,7 +48,7 @@ router.post(
     successRedirect: '/campgrounds',
     failureRedirect: '/login',
     failureFlash: true,
-    successFlash: 'Welcome to YelpCamp!',
+    successFlash: 'Welcome to CampReviews!',
   }),
   (req, res) => {
     const lastpage = req.session.returnTo;

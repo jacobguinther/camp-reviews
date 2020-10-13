@@ -4,7 +4,7 @@
   "engines": {
     "node": "12.16.1"
   },
-  "description": "YelpCamp v1",
+  "description": "CampReviews v1",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
