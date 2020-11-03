@@ -3,7 +3,7 @@ CampReviews is a project from the Udemy course 'The Web Developer' Bootcamp by C
 
 # ![CampReviews ScreenShot](public/CampReviews_Screenshot.png)
 
-Go to [CampReviews](https://jg-yelpcamp.herokuapp.com/campgrounds/page-1)
+Go to [CampReviews](https://jg-camp-reviews.herokuapp.com/campgrounds/page-1)
 
 ### Front End
 - ejs
