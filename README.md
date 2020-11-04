@@ -1,7 +1,7 @@
 # CampReviews
 CampReviews is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
 
-# ![CampReviews ScreenShot](https://jg-s3-storage.s3.us-east-1.amazonaws.com/Camp_Reviews_Pagination_4665e15c24.gif)
+# ![CampReviews ScreenShot](public/CampReviews_Screenshot.png)
 
 Go to [CampReviews](https://jg-camp-reviews.herokuapp.com/campgrounds/page-1)
 
