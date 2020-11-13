@@ -1,5 +1,4 @@
 # CampReviews
-CampReviews is a project from the Udemy course 'The Web Developer' Bootcamp by Colt Steele.
 
 # ![CampReviews ScreenShot](public/CampReviews_Screenshot.png)
 
