@@ -1,4 +1,5 @@
-# CampReviews
+<h1 align="center">CampReviews</>
+<h4 align="center">A place where users can post and review campgrounds</a>.</h4>
 
 # ![CampReviews ScreenShot](./gifs/CampReviewsDemoGif.gif)
 
