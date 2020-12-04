@@ -1,6 +1,6 @@
 # CampReviews
 
-# ![CampReviews ScreenShot](public/CampReviews_Screenshot.png)
+# ![CampReviews ScreenShot](./gifs/CampReviewsDemoGif.gif)
 
 Go to [CampReviews](https://jg-camp-reviews.herokuapp.com/campgrounds/page-1)
 
