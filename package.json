@@ -37,6 +37,6 @@
     "eslint-plugin-ejs-js": "^0.1.0",
     "eslint-plugin-import": "^2.20.2",
     "locus": "^2.0.4",
-    "node-sass": "^4.13.1"
+    "node-sass": "^7.0.0"
   }
 }
