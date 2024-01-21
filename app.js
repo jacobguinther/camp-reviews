@@ -8,15 +8,16 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
-const seedDB = require('./seeds');
 const User = require('./models/user');
 
 const userRoutes = require('./routes/user');
 const reviewRoutes = require('./routes/review');
 const campgroundRoutes = require('./routes/campground');
 
+// const seedDB = require('./seeds');
+
 mongoose.Promise = global.Promise;
-const databaseUri = `${process.env.MONGODB_URI}` || 'mongodb://localhost/yelp_camp';
+const databaseUri = `${process.env.MONGODB_URI}`;
 
 mongoose
   .connect(databaseUri, {
