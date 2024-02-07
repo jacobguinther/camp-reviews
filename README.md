@@ -3,7 +3,7 @@
 
 # ![CampReviews ScreenShot](./gifs/CampReviewsDemoGif.gif)
 
-Go to [CampReviews](https://jg-camp-reviews.herokuapp.com/campgrounds/page-1)
+Go to [CampReviews](http://3.136.17.154/)
 
 ### Front End
 - ejs
